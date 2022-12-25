@@ -1,8 +1,14 @@
 import Login from "./Login";
+import MTGSearch from "./MTGSearch";
 import "./App.css";
 
 function App() {
-  return <Login />;
+  return (
+    <div>
+      <Login />
+      <MTGSearch />
+    </div>
+  );
 }
 
 export default App;
