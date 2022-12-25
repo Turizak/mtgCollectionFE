@@ -1,26 +1,22 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import Card from "./Card";
 import Button from "./Button";
 import classes from "./Login.module.css";
 
 const Login = () => {
-  const [enteredUsername, setEnteredUsername] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
+  const usernameRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
 
   window.localStorage.setItem("token", "none");
-
-  const usernameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEnteredUsername(e.target.value);
-  };
-
-  const passwordChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEnteredPassword(e.target.value);
-  };
 
   // Login
 
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log({
+      username: usernameRef?.current?.value,
+      password: passwordRef?.current?.value,
+    });
   };
 
   return (
@@ -33,14 +29,14 @@ const Login = () => {
             type="text"
             className={classes.input}
             placeholder="Username"
-            onChange={usernameChangeHandler}
+            ref={usernameRef}
           />
           <label htmlFor="password" className={classes.label}></label>
           <input
             type="password"
             className={classes.input}
             placeholder="Password"
-            onChange={passwordChangeHandler}
+            ref={passwordRef}
           />
           <Button type="submit">Login</Button>
         </form>
