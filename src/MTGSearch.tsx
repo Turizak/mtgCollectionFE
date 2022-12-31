@@ -18,7 +18,6 @@ const MTGSearch = () => {
     );
     const data = await response.json();
     scryfall.push(data);
-    console.log(scryfall);
 
     const transformedCards = scryfall.map((scryfallData: any) => {
       return {
@@ -26,7 +25,7 @@ const MTGSearch = () => {
         id: scryfallData.data[0].id,
         name: scryfallData.data[0].name,
         price: scryfallData.data[0].prices.usd,
-        image_uri: scryfallData.data[0].image_uris.small,
+        image: scryfallData.data[0].image_uris.png,
       };
     });
     setMyCard(transformedCards);

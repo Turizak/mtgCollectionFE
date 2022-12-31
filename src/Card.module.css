@@ -8,6 +8,10 @@
   border-radius: 10px;
 }
 
-li {
+ul {
   list-style-type: none;
+}
+
+img {
+  max-width: 400px;
 }
