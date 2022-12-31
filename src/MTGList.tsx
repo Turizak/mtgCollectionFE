@@ -10,7 +10,7 @@ const MTGList = (props: any) => {
           name={movie.name}
           price={movie.price}
           id={movie.id}
-          image_uri={movie.image_uri}
+          image={movie.image}
         />
       ))}
     </ul>
