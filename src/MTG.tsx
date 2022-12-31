@@ -1,3 +1,4 @@
+import Button from "./Button";
 const MTG = (props: any) => {
   return (
     <li>
@@ -5,6 +6,7 @@ const MTG = (props: any) => {
       <h2>{props.name}</h2>
       <h3>{props.id}</h3>
       <p>${props.price}</p>
+      <Button>Add to Collection</Button>
     </li>
   );
 };
