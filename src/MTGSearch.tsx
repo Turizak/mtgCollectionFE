@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import classes from "./Login.module.css";
+import classes from "./MTGSearch.module.css";
 import MTGList from "./MTGList";
 import Button from "./Button";
 import Card from "./Card";

@@ -5,7 +5,6 @@ import "./App.css";
 function App() {
   return (
     <div>
-      <Login />
       <MTGSearch />
     </div>
   );
