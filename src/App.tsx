@@ -1,12 +1,16 @@
 import Login from "./Login";
 import MTGSearch from "./MTGSearch";
+import NotFound from "./NotFound";
 import "./App.css";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <div>
-      <MTGSearch />
-    </div>
+    <Routes>
+      <Route path="/" element={<MTGSearch />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
