@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classes from "./MTGSearch.module.css";
 import MTGList from "./MTGList";
-import Button from "./Button";
+import Button from "@mui/material/Button";
 import Card from "./Card";
 
 const MTGSearch = () => {
@@ -12,10 +12,11 @@ const MTGSearch = () => {
   const cardRef = React.useRef<HTMLInputElement>(null);
 
   let scryfall: any = [];
+  let scryfallURL = import.meta.env.VITE_SFURL;
 
   async function fetchMTGCard() {
     const response = await fetch(
-      `https://api.scryfall.com/cards/search?order=usd&q=${cardRef?.current?.value}`
+      `${scryfallURL}/cards/search?order=usd&q=${cardRef?.current?.value}`
     );
     const data = await response.json();
     scryfall.push(data);
@@ -30,7 +31,6 @@ const MTGSearch = () => {
       };
     });
 
-    console.log(transformedCards);
     setMyCard(transformedCards);
     setMyCardPic("");
   }
@@ -41,7 +41,9 @@ const MTGSearch = () => {
         <label htmlFor="card" className={classes.label}></label>
         <input id="card" type="text" className={classes.input} ref={cardRef} />
       </form>
-      <Button onClick={fetchMTGCard}>Search Scryfall</Button>
+      <Button variant="contained" onClick={fetchMTGCard}>
+        Search Scryfall
+      </Button>
       <img src={myCardPic} alt="" />
       <MTGList mtgCards={myCard} />
     </Card>
