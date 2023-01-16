@@ -12,7 +12,7 @@ const Footer = () => {
         width: "100%",
         position: "fixed",
         bottom: 0,
-        backgroundColor: "primary",
+        backgroundColor: "primary.main",
       }}
       component="footer"
     >
@@ -34,7 +34,7 @@ const Footer = () => {
             mb: 2,
           }}
         >
-          <Typography variant="caption" color="initial">
+          <Typography variant="caption" color="white">
             Created by Rob Kazirut and Tom Slanda
           </Typography>
         </Box>
