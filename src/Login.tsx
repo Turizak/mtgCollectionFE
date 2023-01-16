@@ -8,6 +8,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
+import { auto } from "@popperjs/core";
 
 const Login = () => {
   // useRef hooks used for login
@@ -55,8 +56,9 @@ const Login = () => {
         <form onSubmit={loginHandler}>
           <Box
             sx={{
-              p: 1,
-              m: 1,
+              display: "block",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <TextField
@@ -65,6 +67,7 @@ const Login = () => {
               label="Username"
               id="username"
               type="text"
+              sx={{ width: "100%" }}
               inputRef={usernameRef}
             />
             <TextField
@@ -73,9 +76,17 @@ const Login = () => {
               label="Password"
               id="password"
               type="password"
+              sx={{ width: "100%" }}
               inputRef={passwordRef}
             />
-            <Button variant="contained" type="submit">
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                display: "flex",
+                margin: "auto",
+              }}
+            >
               Login
             </Button>
           </Box>

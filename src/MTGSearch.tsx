@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import Grid from "@mui/material/Grid";
 import MTGList from "./MTGList";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
@@ -10,9 +10,6 @@ import Footer from "./Footer";
 
 const MTGSearch = () => {
   const [myCard, setMyCard] = useState([]);
-  const [myCardPic, setMyCardPic] = useState(
-    "https://media.wizards.com/2022/30a/en_jiTqp9fC78.png"
-  );
 
   const cardRef = React.useRef<HTMLInputElement>(null);
 
@@ -37,36 +34,37 @@ const MTGSearch = () => {
     });
 
     setMyCard(transformedCards);
-    setMyCardPic("");
   }
 
   return (
     <>
       <Header />
       <Container maxWidth="xs">
-        <Grid container>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              label="Card"
-              id="card"
-              type="text"
-              inputRef={cardRef}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" onClick={fetchMTGCard}>
-              Search Scryfall
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper>
-              <img src={myCardPic} alt="" />
-              <MTGList mtgCards={myCard} />
-            </Paper>
-          </Grid>
-        </Grid>
+        <Box
+          sx={{
+            display: "block",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TextField
+            variant="outlined"
+            margin="normal"
+            label="Card"
+            id="card"
+            type="text"
+            sx={{ width: "100%" }}
+            inputRef={cardRef}
+          />
+          <Button
+            variant="contained"
+            sx={{ display: "flex", margin: "auto" }}
+            onClick={fetchMTGCard}
+          >
+            Search Scryfall
+          </Button>
+          <MTGList mtgCards={myCard} />
+        </Box>
       </Container>
       <Footer />
     </>
