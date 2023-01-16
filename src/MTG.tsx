@@ -1,4 +1,7 @@
-import Button from "./Button";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+
 const MTG = (props: any) => {
   let baseURL = import.meta.env.VITE_APIURL;
 
@@ -19,13 +22,19 @@ const MTG = (props: any) => {
     });
   }
   return (
-    <li>
-      <img src={props.image} alt="card image" />
-      <h2>{props.name}</h2>
-      <h3>{props.id}</h3>
-      <p>${props.price}</p>
-      <Button onClick={addCardHandler}>Add to Collection</Button>
-    </li>
+    <Container maxWidth="sm">
+      <Box>
+        <li>
+          <img src={props.image} alt="card image" />
+          <h2>{props.name}</h2>
+          <h3>{props.id}</h3>
+          <p>${props.price}</p>
+          <Button variant="contained" onClick={addCardHandler}>
+            Add to Collection
+          </Button>
+        </li>
+      </Box>
+    </Container>
   );
 };
 

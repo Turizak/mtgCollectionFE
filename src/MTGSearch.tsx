@@ -1,14 +1,19 @@
-import React, { useState } from "react";
-import classes from "./MTGSearch.module.css";
+import React, { useState, useRef } from "react";
+import Grid from "@mui/material/Grid";
 import MTGList from "./MTGList";
+import TextField from "@mui/material/TextField";
+import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Card from "./Card";
+import Paper from "@mui/material/Paper";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const MTGSearch = () => {
   const [myCard, setMyCard] = useState([]);
   const [myCardPic, setMyCardPic] = useState(
     "https://media.wizards.com/2022/30a/en_jiTqp9fC78.png"
   );
+
   const cardRef = React.useRef<HTMLInputElement>(null);
 
   let scryfall: any = [];
@@ -27,7 +32,7 @@ const MTGSearch = () => {
         id: scryfallData.data[0].id,
         name: scryfallData.data[0].name,
         price: scryfallData.data[0].prices.usd,
-        image: scryfallData.data[0].image_uris.png,
+        image: scryfallData.data[0].image_uris.normal,
       };
     });
 
@@ -36,17 +41,35 @@ const MTGSearch = () => {
   }
 
   return (
-    <Card>
-      <form>
-        <label htmlFor="card" className={classes.label}></label>
-        <input id="card" type="text" className={classes.input} ref={cardRef} />
-      </form>
-      <Button variant="contained" onClick={fetchMTGCard}>
-        Search Scryfall
-      </Button>
-      <img src={myCardPic} alt="" />
-      <MTGList mtgCards={myCard} />
-    </Card>
+    <>
+      <Header />
+      <Container maxWidth="xs">
+        <Grid container>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              label="Card"
+              id="card"
+              type="text"
+              inputRef={cardRef}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" onClick={fetchMTGCard}>
+              Search Scryfall
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Paper>
+              <img src={myCardPic} alt="" />
+              <MTGList mtgCards={myCard} />
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+      <Footer />
+    </>
   );
 };
 
