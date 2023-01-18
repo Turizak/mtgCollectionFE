@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
@@ -21,6 +22,7 @@ const MTG = (props: any) => {
       }),
     });
   }
+
   return (
     <Container maxWidth="sm">
       <Paper
