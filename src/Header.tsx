@@ -12,11 +12,11 @@ const Header = () => {
   const navigate = useNavigate();
 
   function goToCollection() {
-    navigate("/collection");
+    navigate("/");
   }
 
   function goToMTGSearch() {
-    navigate("/");
+    navigate("/search");
   }
   function goToLogin() {
     navigate("/login");

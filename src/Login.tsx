@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { useNavigate } from "react-router-dom";
@@ -27,32 +28,29 @@ const Login = () => {
   // Login
   async function loginHandler(e: React.FormEvent) {
     e.preventDefault();
-    if (usernameRef?.current?.value === "") {
-      alert("Username is Required!");
-    } else if (passwordRef?.current?.value === "") {
-      alert("Password is Required!");
-    } else {
-      let response = await fetch(`${baseURL}/api/v1/login`, {
-        method: "POST",
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: `${usernameRef?.current?.value}`,
-          password: `${passwordRef?.current?.value}`,
-        }),
-      });
 
-      let commits = await response.json();
-      localStorage.setItem("token", commits.token);
-      navigate("/");
-    }
+    let response = await fetch(`${baseURL}/api/v1/login`, {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: `${usernameRef?.current?.value}`,
+        password: `${passwordRef?.current?.value}`,
+      }),
+    });
+
+    let commits = await response.json();
+    localStorage.setItem("token", commits.token);
+    navigate("/");
   }
   return (
     <>
-      <Header />
       <Container maxWidth="sm">
+        <Typography variant="h2" gutterBottom>
+          MTG Collection App
+        </Typography>
         <form onSubmit={loginHandler}>
           <Box
             sx={{
@@ -62,6 +60,7 @@ const Login = () => {
             }}
           >
             <TextField
+              required
               variant="outlined"
               margin="normal"
               label="Username"
@@ -71,6 +70,7 @@ const Login = () => {
               inputRef={usernameRef}
             />
             <TextField
+              required
               variant="outlined"
               margin="normal"
               label="Password"
