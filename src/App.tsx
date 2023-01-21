@@ -11,9 +11,9 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<Collection />} />
+        <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/collection" element={<Collection />} />
         <Route path="/search" element={<MTGSearch />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
