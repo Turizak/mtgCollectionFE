@@ -19,9 +19,6 @@ const Login = () => {
   // useNavigate hook from React Router
   const navigate = useNavigate();
 
-  // Reset token
-  window.localStorage.setItem("token", "none");
-
   // ENV Variables
   let baseURL = import.meta.env.VITE_APIURL;
 
@@ -41,9 +38,13 @@ const Login = () => {
       }),
     });
 
-    let commits = await response.json();
-    localStorage.setItem("token", commits.token);
-    navigate("/collection");
+    if (response.status != 200) {
+      alert("User not found");
+    } else {
+      let commits = await response.json();
+      localStorage.setItem("token", commits.token);
+      navigate("/collection");
+    }
   }
   return (
     <>
