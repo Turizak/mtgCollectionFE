@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,30 +15,43 @@ const Collection = () => {
 
   let baseURL = import.meta.env.VITE_APIURL;
 
-  useEffect(() => {
-    fetch(`${baseURL}/api/v1/account/cards`, {
+  const getAccountCards = async () => {
+    await fetch(`${baseURL}/api/v1/account/prices`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
         "Content-type": "application/json",
       },
     })
-      .then((response) => response.json())
-      .then((data) => setMyCollection(data));
+    let response = await fetch(`${baseURL}/api/v1/account/cards`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-type": "application/json",
+      },
+    });
+    let commits = await response.json();
+    setMyCollection(commits)
+  };
+
+  useEffect(() => {
+    getAccountCards();
   }, []);
 
-  async function deleteCard() {
-    const response = await fetch(
-      `${baseURL}/api/v1/account/cards/89f612d6-7c59-4a7b-a87d-45f789e88ba5`,
+  async function deleteCard(row: any) {
+    let response = await fetch(
+      `${baseURL}/api/v1/account/cards/${row.scry_id}`,
       {
-        method: "DEL",
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
           "Content-Type": "application/json",
         },
       }
     );
-    location.reload();
+    let commits = await response.json();
+    await getAccountCards();
+    alert(commits?.result);
   }
 
   return (
@@ -49,9 +62,9 @@ const Collection = () => {
           <TableHead>
             <TableRow>
               <TableCell>Card</TableCell>
-              <TableCell>Scry ID</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Qty</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,9 +77,13 @@ const Collection = () => {
                   <TableCell component="th" scope="row">
                     {row.card_name}
                   </TableCell>
-                  <TableCell>{row.scry_id}</TableCell>
                   <TableCell>{"$" + row.price}</TableCell>
                   <TableCell>{row.quantity}</TableCell>
+                  <TableCell>
+                    <Button variant="contained" onClick={() => deleteCard(row)}>
+                      Delete
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>

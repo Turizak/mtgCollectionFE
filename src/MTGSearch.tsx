@@ -1,10 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import MTGList from "./MTGList";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
 import Header from "./Header";
 import Footer from "./Footer";
 

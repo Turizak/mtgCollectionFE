@@ -5,7 +5,7 @@ import Collection from "./Collection";
 import Signup from "./Signup";
 import PrivateRoutes from "./PrivateRoutes";
 import "./App.css";
-import { Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
