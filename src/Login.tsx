@@ -43,7 +43,7 @@ const Login = () => {
 
     let commits = await response.json();
     localStorage.setItem("token", commits.token);
-    navigate("/");
+    navigate("/collection");
   }
   return (
     <>

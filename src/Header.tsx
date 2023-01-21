@@ -12,14 +12,15 @@ const Header = () => {
   const navigate = useNavigate();
 
   function goToCollection() {
-    navigate("/");
+    navigate("/collection");
   }
 
   function goToMTGSearch() {
     navigate("/search");
   }
   function goToLogin() {
-    navigate("/login");
+    localStorage.clear()
+    navigate("/");
   }
 
   return (
