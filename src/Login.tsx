@@ -1,20 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
-import Header from "./Header";
-import { auto } from "@popperjs/core";
 
 const Login = () => {
   // useRef hooks used for login
-  const usernameRef = React.useRef<HTMLInputElement>(null);
-  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   // useNavigate hook from React Router
   const navigate = useNavigate();

@@ -1,4 +1,3 @@
-import React from "react";
 import MTG from "./MTG";
 
 const MTGList = (props: any) => {
