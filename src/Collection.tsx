@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -26,6 +27,20 @@ const Collection = () => {
       .then((data) => setMyCollection(data));
   }, []);
 
+  async function deleteCard() {
+    const response = await fetch(
+      `${baseURL}/api/v1/account/cards/89f612d6-7c59-4a7b-a87d-45f789e88ba5`,
+      {
+        method: "DEL",
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    location.reload();
+  }
+
   return (
     <>
       <Header />
@@ -34,6 +49,7 @@ const Collection = () => {
           <TableHead>
             <TableRow>
               <TableCell>Card</TableCell>
+              <TableCell>Scry ID</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Qty</TableCell>
             </TableRow>
@@ -48,6 +64,7 @@ const Collection = () => {
                   <TableCell component="th" scope="row">
                     {row.card_name}
                   </TableCell>
+                  <TableCell>{row.scry_id}</TableCell>
                   <TableCell>{"$" + row.price}</TableCell>
                   <TableCell>{row.quantity}</TableCell>
                 </TableRow>

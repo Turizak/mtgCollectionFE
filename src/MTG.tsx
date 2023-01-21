@@ -21,6 +21,7 @@ const MTG = (props: any) => {
         quantity: 1,
       }),
     });
+    alert("Added!");
   }
 
   return (
@@ -32,7 +33,7 @@ const MTG = (props: any) => {
           listStyle: "none",
         }}
       >
-        <li>
+        <ul>
           <img src={props.image} alt="card image" />
           <h2>{props.name}</h2>
           <h3>{props.id}</h3>
@@ -44,7 +45,7 @@ const MTG = (props: any) => {
           >
             Add to Collection
           </Button>
-        </li>
+        </ul>
       </Paper>
     </Container>
   );
