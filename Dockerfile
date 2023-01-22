@@ -1,8 +1,16 @@
-FROM node:latest
+# build environment
+FROM node:latest as build
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm ci --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+COPY . ./
+RUN npm run build
 
-WORKDIR /usr/src/app
-COPY . .
-
-RUN npm install
-EXPOSE 4173
-CMD ["npm", "run", "preview"]
+# production environment
+FROM nginx:stable-alpine
+COPY --from=build /app/src/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

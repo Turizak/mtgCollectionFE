@@ -1,7 +1,0 @@
-version: '3.8'
-
-services:
-  mtgcollectionfe:
-    build: .
-    ports:
-      - '4173:4173'
