@@ -4,6 +4,35 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import ListIcon from "@mui/icons-material/List";
+import IconButton from "@mui/material/IconButton";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+declare module "@mui/material/styles" {
+  interface Theme {
+    status: {
+      danger: string;
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    status?: {
+      danger?: string;
+    };
+  }
+}
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#BB2649",
+    },
+    secondary: {
+      main: "#26BB98",
+    },
+  },
+});
 
 const Header = () => {
   const navigate = useNavigate();
@@ -16,41 +45,37 @@ const Header = () => {
     navigate("/search");
   }
   function goToLogin() {
-    localStorage.clear()
+    localStorage.clear();
     navigate("/");
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to='/collection' style={{textDecoration:'none', color:'white'}}>MTG Collection App</Link>
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "secondary.main", m: 1 }}
-            onClick={goToMTGSearch}
-          >
-            Add Cards
-          </Button>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "secondary.main", m: 1 }}
-            onClick={goToCollection}
-          >
-            My Collection
-          </Button>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "secondary.main", m: 1 }}
-            onClick={goToLogin}
-          >
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <Link
+                to="/collection"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                MTG Collection App
+              </Link>
+            </Typography>
+            <IconButton onClick={goToMTGSearch} style={{ color: "white" }}>
+              <AddBoxIcon fontSize="medium" />
+            </IconButton>
+            <IconButton onClick={goToCollection} style={{ color: "white" }}>
+              <ListIcon fontSize="medium" />
+            </IconButton>
+
+            <IconButton onClick={goToLogin} style={{ color: "white" }}>
+              <LogoutIcon fontSize="medium" />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </ThemeProvider>
   );
 };
 

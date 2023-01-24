@@ -76,3 +76,7 @@ select {
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+body {
+  margin-bottom: 100px;
+}
