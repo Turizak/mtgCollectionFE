@@ -50,7 +50,7 @@ const Footer = () => {
             }}
           >
             <IconButton
-              href="https://github.com/slandath/mtgCollectionFE3"
+              href="https://github.com/slandath/mtgCollectionFE2"
               target="_blank"
               style={{ color: "white" }}
             >
