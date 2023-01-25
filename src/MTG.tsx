@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const MTG = (props: any) => {
   let baseURL = import.meta.env.VITE_APIURL;
@@ -24,29 +25,30 @@ const MTG = (props: any) => {
   }
 
   return (
-    <Container maxWidth="sm">
-      <Paper
-        sx={{
-          alignItems: "center",
-          justifyContent: "center",
-          listStyle: "none",
-        }}
-      >
-        <ul>
+    <Paper elevation={3}>
+      <ul>
+        <Box>
           <img src={props.image} alt="card image" />
-          <h2>{props.name}</h2>
-          <h3>{props.id}</h3>
-          <p>${props.price}</p>
-          <Button
-            sx={{ display: "flex", margin: "auto" }}
-            variant="contained"
-            onClick={addCardHandler}
-          >
-            Add to Collection
-          </Button>
-        </ul>
-      </Paper>
-    </Container>
+        </Box>
+        <Box paddingX={1}>
+          <Typography variant="h6" component="h2" align="center">
+            <h2>{props.name}</h2>
+          </Typography>
+        </Box>
+        <Box>
+          <Typography variant="subtitle1" component="p" align="center">
+            <p>${props.price}</p>
+          </Typography>
+        </Box>
+        <Button
+          sx={{ display: "flex", margin: "auto" }}
+          variant="contained"
+          onClick={addCardHandler}
+        >
+          Add to Collection
+        </Button>
+      </ul>
+    </Paper>
   );
 };
 

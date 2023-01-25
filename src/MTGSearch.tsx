@@ -6,6 +6,31 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Header from "./Header";
 import Footer from "./Footer";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+declare module "@mui/material/styles" {
+  interface Theme {
+    status: {
+      danger: string;
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    status?: {
+      danger?: string;
+    };
+  }
+}
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#BB2649",
+    },
+    secondary: {
+      main: "#26BB98",
+    },
+  },
+});
 
 const MTGSearch = () => {
   const [myCard, setMyCard] = useState([]);
@@ -38,33 +63,35 @@ const MTGSearch = () => {
   return (
     <>
       <Header />
-      <Container maxWidth="xs">
-        <Box
-          sx={{
-            display: "block",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            label="Card"
-            id="card"
-            type="text"
-            sx={{ width: "100%" }}
-            inputRef={cardRef}
-          />
-          <Button
-            variant="contained"
-            sx={{ display: "flex", margin: "auto" }}
-            onClick={fetchMTGCard}
+      <ThemeProvider theme={theme}>
+        <Container maxWidth="xs">
+          <Box
+            sx={{
+              display: "block",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            Search Scryfall
-          </Button>
-          <MTGList mtgCards={myCard} />
-        </Box>
-      </Container>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              label="Card"
+              id="card"
+              type="text"
+              sx={{ width: "100%" }}
+              inputRef={cardRef}
+            />
+            <Button
+              variant="contained"
+              sx={{ display: "flex", margin: "auto" }}
+              onClick={fetchMTGCard}
+            >
+              Search Scryfall
+            </Button>
+            <MTGList mtgCards={myCard} />
+          </Box>
+        </Container>
+      </ThemeProvider>
       <Footer />
     </>
   );
