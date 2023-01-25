@@ -8,14 +8,14 @@ import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="*" element={<NotFound />} />
-        <Route element={<PrivateRoutes />}>
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/search" element={<MTGSearch />} />
-        </Route>
-      </Routes>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="*" element={<NotFound />} />
+      <Route element={<PrivateRoutes />}>
+        <Route path="/collection" element={<Collection />} />
+        <Route path="/search" element={<MTGSearch />} />
+      </Route>
+    </Routes>
   );
 }
 
