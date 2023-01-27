@@ -76,7 +76,7 @@ const Login = () => {
     <>
       <ThemeProvider theme={theme}>
         <Container maxWidth="sm">
-          <Typography variant="h3" gutterBottom align="center">
+          <Typography variant="h3" align="center">
             MTG Collection App
           </Typography>
           <form onSubmit={loginHandler}>
