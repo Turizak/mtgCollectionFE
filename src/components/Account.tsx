@@ -1,12 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
+import Footer from "./Footer";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Footer from "./Footer";
-import { useNavigate } from "react-router-dom";
+
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -32,7 +33,7 @@ const theme = createTheme({
   },
 });
 
-const Account = () => {
+function Account() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
