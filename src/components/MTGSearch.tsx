@@ -49,13 +49,15 @@ function MTGSearch() {
   });
 
   const [disabled, setDisabled] = useState(true);
-
   const cardRef = useRef<HTMLInputElement>(null);
 
   async function fetchMTGCard() {
     const response = await fetch(
       `${scryfallURL}/cards/search?order=usd&q=${cardRef?.current?.value}`
     );
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.statusText}`)
+    }
     const data = await response.json();
     setMyCard({
       ...myCard,
@@ -65,6 +67,7 @@ function MTGSearch() {
       image: data.data["0"].image_uris.small,
     });
     setDisabled(false);
+    console.log(data)
   }
 
   async function addCardHandler() {
