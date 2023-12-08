@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -35,10 +36,10 @@ const theme = createTheme({
   },
 });
 
-const MTGSearch = () => {
-  let scryfallURL = import.meta.env.VITE_SFURL;
-  let baseURL = import.meta.env.VITE_APIURL;
-  let mtgURL = import.meta.env.VITE_MTGURL;
+function MTGSearch() {
+  const scryfallURL = import.meta.env.VITE_SFURL;
+  const baseURL = import.meta.env.VITE_APIURL;
+  const mtgURL = import.meta.env.VITE_MTGURL;
 
   const [myCard, setMyCard] = useState({
     id: "",
@@ -61,7 +62,7 @@ const MTGSearch = () => {
       id: data.data["0"].id,
       name: data.data["0"].name,
       price: data.data["0"].prices.usd,
-      image: data.data["0"].image_uris.normal,
+      image: data.data["0"].image_uris.small,
     });
     setDisabled(false);
   }
@@ -81,7 +82,7 @@ const MTGSearch = () => {
         quantity: 1,
       }),
     });
-    let commits = await response.json();
+    const commits = await response.json();
     commits?.status === 200 || 201
       ? alert("Added!")
       : alert("Could not add - please try another card");
@@ -116,13 +117,13 @@ const MTGSearch = () => {
               Search Scryfall
             </Button>
             <br />
-            <Paper elevation={12}>
-              <img src={myCard.image} alt="card picture" />
+            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2}} elevation={12}>
+              <img src={myCard.image} style={{width: 150}} alt="card picture"/>
               <Typography
                 component="h2"
                 variant="h5"
                 textAlign="center"
-                sx={{ margin: 2 }}
+                sx={{ marginTop: 1}}
               >
                 {myCard.name}
               </Typography>
@@ -130,12 +131,12 @@ const MTGSearch = () => {
                 component="p"
                 variant="h6"
                 textAlign="center"
-                sx={{ margin: 2 }}
+                sx={{marginBottom: 1}}
               >
                 {myCard.price}
               </Typography>
               <Button
-                sx={{ display: "flex", margin: "auto" }}
+                sx={{ display: "flex", margin: "auto"}}
                 color="secondary"
                 variant="contained"
                 onClick={addCardHandler}
@@ -150,6 +151,6 @@ const MTGSearch = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default MTGSearch;

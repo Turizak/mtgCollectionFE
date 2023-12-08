@@ -1,3 +1,4 @@
+import React from "react";
 import { useRef } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -32,7 +33,7 @@ const theme = createTheme({
   },
 });
 
-const Login = () => {
+function Login() {
   // useRef hooks used for login
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -41,13 +42,13 @@ const Login = () => {
   const navigate = useNavigate();
 
   // ENV Variables
-  let baseURL = import.meta.env.VITE_APIURL;
+  const baseURL = import.meta.env.VITE_APIURL;
 
   // Login
   async function loginHandler(e: React.FormEvent) {
     e.preventDefault();
 
-    let response = await fetch(`${baseURL}/api/v1/login`, {
+    const response = await fetch(`${baseURL}/api/v1/login`, {
       method: "POST",
       headers: {
         Accept: "*/*",
@@ -62,7 +63,7 @@ const Login = () => {
     if (response.status != 200) {
       alert("User not found");
     } else {
-      let commits = await response.json();
+      const commits = await response.json();
       localStorage.setItem("token", commits.token);
       navigate("/collection");
     }
@@ -136,5 +137,5 @@ const Login = () => {
       <Footer />
     </>
   );
-};
+}
 export default Login;

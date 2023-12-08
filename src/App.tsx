@@ -1,3 +1,4 @@
+import React from "react";
 import Login from "./components/Login";
 import MTGSearch from "./components/MTGSearch";
 import Account from "./components/Account";

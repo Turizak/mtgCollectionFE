@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -38,10 +39,10 @@ const theme = createTheme({
   },
 });
 
-const Collection = () => {
+function Collection() {
   const [myCollection, setMyCollection] = useState([]);
 
-  let baseURL = import.meta.env.VITE_APIURL;
+  const baseURL = import.meta.env.VITE_APIURL;
 
   const getAccountCards = async () => {
     await fetch(`${baseURL}/api/v1/account/prices`, {
@@ -51,14 +52,14 @@ const Collection = () => {
         "Content-type": "application/json",
       },
     });
-    let response = await fetch(`${baseURL}/api/v1/account/cards`, {
+    const response = await fetch(`${baseURL}/api/v1/account/cards`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
         "Content-type": "application/json",
       },
     });
-    let commits = await response.json();
+    const commits = await response.json();
     setMyCollection(commits);
   };
 
@@ -67,7 +68,7 @@ const Collection = () => {
   }, []);
 
   async function deleteCard(row: any) {
-    let response = await fetch(
+    const response = await fetch(
       `${baseURL}/api/v1/account/cards/${row.scry_id}`,
       {
         method: "DELETE",
@@ -77,7 +78,7 @@ const Collection = () => {
         },
       }
     );
-    let commits = await response.json();
+    const commits = await response.json();
     await getAccountCards();
     alert(commits?.result);
   }
@@ -122,6 +123,6 @@ const Collection = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default Collection;

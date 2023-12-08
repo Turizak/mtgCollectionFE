@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import Footer from "./Footer";
@@ -43,13 +44,13 @@ function Account() {
   const navigate = useNavigate();
 
   // ENV Variables
-  let baseURL = import.meta.env.VITE_APIURL;
+  const baseURL = import.meta.env.VITE_APIURL;
 
   // Login
   async function submitHandler(e: React.FormEvent) {
     e.preventDefault();
 
-    let response = await fetch(`${baseURL}/api/v1/account/create`, {
+    const response = await fetch(`${baseURL}/api/v1/account/create`, {
       method: "POST",
       headers: {
         Accept: "*/*",
@@ -135,7 +136,6 @@ function Account() {
               >
                 Create Account
               </Button>
-              <br />
             </Box>
           </form>
         </Container>
@@ -143,6 +143,6 @@ function Account() {
       </ThemeProvider>
     </>
   );
-};
+}
 
 export default Account;
