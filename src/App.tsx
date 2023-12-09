@@ -1,6 +1,7 @@
 import React from "react";
 import Login from "./components/Login";
 import MTGSearch from "./components/MTGSearch";
+import Search from "./components/Search";
 import Account from "./components/Account";
 import Collection from "./components/Collection";
 import PrivateRoutes from "./PrivateRoutes";
@@ -14,7 +15,7 @@ function App() {
       <Route path="/account" element={<Account />} />
       <Route element={<PrivateRoutes />}>
         <Route path="/collection" element={<Collection />} />
-        <Route path="/search" element={<MTGSearch />} />
+        <Route path="/search" element={<Search />} />
       </Route>
     </Routes>
   );
