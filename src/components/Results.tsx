@@ -30,15 +30,14 @@ declare module "@mui/material/styles" {
     },
   });
 
-
-function Results({card}) {
+function Results({ card }) {
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
             <ThemeProvider theme={theme}>
         {
         card.map((item, index)=>
         <div key={index}>
-            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2}} elevation={12}>
+            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2, marginTop: 1}} elevation={12}>
               <img src={item.image_uris.small}alt="card picture"/>
               <Typography
                 component="h2"
@@ -54,7 +53,7 @@ function Results({card}) {
                 textAlign="center"
                 sx={{marginBottom: 1}}
               >
-                {item.prices.usd}
+                ${item.prices.usd}
               </Typography>
               <Button
                 sx={{ display: "flex", margin: "auto"}}
@@ -66,10 +65,6 @@ function Results({card}) {
                 Add to Collection
               </Button>
             </Paper>
-        {/* <img src={item.image_uris.small} />
-        <p>{item.name}</p>
-        <p>{item.set_name}</p>
-        <p>${item.prices.usd}</p> */}
         </div>
         )
         }
