@@ -1,5 +1,6 @@
 import React from 'react'
-import Button from './AddToBtn'
+
+import AddToBtn from './AddToBtn'
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
@@ -31,25 +32,24 @@ function Results({ card }) {
         // eslint-disable-next-line react/prop-types
         card.map((item)=>
         <div key={item.id}>
-            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2, margin: 1}} elevation={12}>
+            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: 250, padding: 2, margin: 1}} elevation={12}>
               <img src={item.image_uris.small}alt="card picture"/>
               <Typography
                 component="h2"
-                variant="h5"
+                variant="subtitle1"
                 textAlign="center"
                 sx={{ marginTop: 1}}
               >
-                {item.name}
+                {item.set_name}
               </Typography>
               <Typography
                 component="p"
                 variant="h6"
                 textAlign="center"
-                sx={{marginBottom: 1}}
               >
                 {item.prices.usd > 0 ? `$${item.prices.usd}` : 'Price Not Available'}
               </Typography>
-              <Button id={item.id} name={item.name} price={item.prices.usd}/>
+              <AddToBtn id={item.id} name={item.name} price={item.prices.usd} />
             </Paper>
         </div>
         )

@@ -3,6 +3,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material'
+import TextField from '@mui/material/TextField';
 import AddIcon from "@mui/icons-material/Add";
 import Theme from './material ui/Theme';
 import { ThemeProvider } from '@mui/material'
@@ -10,6 +11,7 @@ import { ThemeProvider } from '@mui/material'
 function AddToBtn(props) {
     const [clicked, setClicked] = useState(false)
     const [added, setAdded] = useState('')
+    const [quantity, setQuantity] = useState('1')
   
     const baseURL = import.meta.env.VITE_APIURL;
 
@@ -18,7 +20,6 @@ function AddToBtn(props) {
           async function addCard() {
             const response = await fetch(`${baseURL}/api/v1/account/cards`, {
               method: "POST",
-              mode: "no-cors",
               headers: {
                 Accept: "*/*",
                 "Content-Type": "application/json",
@@ -28,7 +29,7 @@ function AddToBtn(props) {
                 scry_id: `${props.id}`,
                 name: `${props.name}`,
                 price: `${props.price}`,
-                quantity: 1,
+                quantity: +`${quantity}`,
               }),
             });
             const commits = await response.json();
@@ -47,7 +48,17 @@ function AddToBtn(props) {
 
   return (
     <ThemeProvider theme={Theme}>
-    <div><Button
+    <div>
+    <TextField
+              variant="outlined"
+              margin="normal"
+              label="Quantity"
+              id="qty"
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+      <Button
     sx={{ display: "flex", margin: "auto"}}
     color="secondary"
     variant="contained"
