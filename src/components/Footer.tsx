@@ -1,3 +1,4 @@
+import React from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -29,8 +30,9 @@ const theme = createTheme({
   },
 });
 
-const Footer = () => {
+function Footer() {
   return (
+    <div>
     <ThemeProvider theme={theme}>
       <Box
         sx={{
@@ -74,7 +76,7 @@ const Footer = () => {
                 style={{
                   color: "white",
                   textDecoration: "none",
-                }}
+                }} rel="noreferrer"
               >
                 Rob Kazirut
               </a>
@@ -85,7 +87,7 @@ const Footer = () => {
                 style={{
                   color: "white",
                   textDecoration: "none",
-                }}
+                }} rel="noreferrer"
               >
                 Tom Slanda
               </a>
@@ -94,7 +96,8 @@ const Footer = () => {
         </Container>
       </Box>
     </ThemeProvider>
-  );
-};
+  </div>
+  )
+}
 
 export default Footer;

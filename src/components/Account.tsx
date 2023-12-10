@@ -1,12 +1,14 @@
-import { useRef } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import Footer from "./Footer";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -32,22 +34,23 @@ const theme = createTheme({
   },
 });
 
-const Login = () => {
-  // useRef hooks used for login
+function Account() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
 
   // useNavigate hook from React Router
   const navigate = useNavigate();
 
   // ENV Variables
-  let baseURL = import.meta.env.VITE_APIURL;
+  const baseURL = import.meta.env.VITE_APIURL;
 
   // Login
-  async function loginHandler(e: React.FormEvent) {
+  async function submitHandler(e: React.FormEvent) {
     e.preventDefault();
 
-    let response = await fetch(`${baseURL}/api/v1/login`, {
+    const response = await fetch(`${baseURL}/api/v1/account/create`, {
       method: "POST",
       headers: {
         Accept: "*/*",
@@ -56,30 +59,26 @@ const Login = () => {
       body: JSON.stringify({
         username: `${usernameRef?.current?.value}`,
         password: `${passwordRef?.current?.value}`,
+        firstName: `${firstNameRef?.current?.value}`,
+        lastName: `${lastNameRef?.current?.value}`,
       }),
     });
-
-    if (response.status != 200) {
-      alert("User not found");
+    if (response.status != 202) {
+      alert("There was an issue - Please reload and try again.");
     } else {
-      let commits = await response.json();
-      localStorage.setItem("token", commits.token);
-      navigate("/collection");
+      alert("Account created!");
+      navigate("/");
     }
-  }
-
-  function goToAccount() {
-    navigate("/account");
   }
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Container maxWidth="sm">
-          <Typography variant="h3" align="center">
+        <Container maxWidth="sm" sx={{ textAlign: "center" }}>
+          <Typography variant="h3" gutterBottom>
             MTG Collection App
           </Typography>
-          <form onSubmit={loginHandler}>
+          <form onSubmit={submitHandler}>
             <Box
               sx={{
                 display: "block",
@@ -107,6 +106,26 @@ const Login = () => {
                 sx={{ width: "100%" }}
                 inputRef={passwordRef}
               />
+              <TextField
+                required
+                variant="outlined"
+                margin="normal"
+                label="First Name"
+                id="firstname"
+                type="text"
+                sx={{ width: "100%" }}
+                inputRef={firstNameRef}
+              />
+              <TextField
+                required
+                variant="outlined"
+                margin="normal"
+                label="Last Name"
+                id="lastname"
+                type="text"
+                sx={{ width: "100%" }}
+                inputRef={lastNameRef}
+              />
               <Button
                 variant="contained"
                 type="submit"
@@ -115,26 +134,15 @@ const Login = () => {
                   margin: "auto",
                 }}
               >
-                Login
+                Create Account
               </Button>
             </Box>
           </form>
-          <br />
-          <Button
-            variant="contained"
-            onClick={goToAccount}
-            sx={{
-              display: "flex",
-              margin: "auto",
-            }}
-          >
-            Create Account
-          </Button>
-          <br />
         </Container>
+        <Footer />
       </ThemeProvider>
-      <Footer />
     </>
   );
-};
-export default Login;
+}
+
+export default Account;
