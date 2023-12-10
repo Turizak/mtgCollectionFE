@@ -37,7 +37,7 @@ const theme = createTheme({
 });
 
 function Search() {
-    const [card, setCard] = useState([])
+    const [card, setCard] = useState<never[]>([])
     const [clicked, setClicked] = useState(false)
     const [loading, setLoading] = useState('')
     const [inputValue, setInputValue] = useState('')
@@ -47,6 +47,7 @@ function Search() {
         async function fetchCards() {
           const response = await fetch(`https://api.scryfall.com/cards/search?unique=prints&q=${inputValue}`)
           const data = await response.json();
+          // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
           setCard([...data.data])
           setLoading('')
         }

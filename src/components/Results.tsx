@@ -30,11 +30,13 @@ declare module "@mui/material/styles" {
     },
   });
 
+// eslint-disable-next-line react/prop-types
 function Results({ card }) {
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
             <ThemeProvider theme={theme}>
         {
+        // eslint-disable-next-line react/prop-types
         card.map((item, index)=>
         <div key={index}>
             <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2, marginTop: 1}} elevation={12}>

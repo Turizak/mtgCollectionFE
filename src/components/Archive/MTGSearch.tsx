@@ -5,8 +5,8 @@ import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "../Header";
+import Footer from "../Footer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
@@ -86,6 +86,7 @@ function MTGSearch() {
       }),
     });
     const commits = await response.json();
+    // eslint-disable-next-line no-constant-condition
     commits?.status === 200 || 201
       ? alert("Added!")
       : alert("Could not add - please try another card");
