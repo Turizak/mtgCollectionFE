@@ -64,7 +64,7 @@ function Results({ card }) {
         // eslint-disable-next-line react/prop-types
         card.map((item, index)=>
         <div key={index}>
-            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2, marginTop: 1}} elevation={12}>
+            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2, marginTop: 3}} elevation={12}>
               <img src={item.image_uris.small}alt="card picture"/>
               <Typography
                 component="h2"
@@ -80,7 +80,7 @@ function Results({ card }) {
                 textAlign="center"
                 sx={{marginBottom: 1}}
               >
-                ${item.prices.usd}
+                {item.prices.usd > 0 ? `$${item.prices.usd}` : 'Price Not Available'}
               </Typography>
               <Button
                 sx={{ display: "flex", margin: "auto"}}
