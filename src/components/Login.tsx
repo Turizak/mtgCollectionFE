@@ -1,15 +1,16 @@
-import React from "react";
-import { useRef } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
-import Footer from "./Footer";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+/* eslint-disable no-inner-declarations */
+import React from 'react';
+import { useRef, useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
+import Footer from './Footer';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   interface Theme {
     status: {
       danger: string;
@@ -25,15 +26,18 @@ declare module "@mui/material/styles" {
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#BB2649",
+      main: '#BB2649',
     },
     secondary: {
-      main: "#26BB98",
+      main: '#26BB98',
     },
   },
 });
 
 function Login() {
+  const [clicked, setClicked] = useState(false);
+  const [disabled, setDisabled] = useState(false)
+
   // useRef hooks used for login
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -45,32 +49,35 @@ function Login() {
   const baseURL = import.meta.env.VITE_APIURL;
 
   // Login
-  async function loginHandler(e: React.FormEvent) {
-    e.preventDefault();
-
-    const response = await fetch(`${baseURL}/api/v1/login`, {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: `${usernameRef?.current?.value}`,
-        password: `${passwordRef?.current?.value}`,
-      }),
-    });
-
-    if (response.status != 200) {
-      alert("User not found");
-    } else {
-      const commits = await response.json();
-      localStorage.setItem("token", commits.token);
-      navigate("/collection");
+  useEffect(()=>{
+    if (clicked) {
+      async function login() {
+        const response = await fetch(`${baseURL}/api/v1/login`, {
+          method: 'POST',
+          headers: {
+            Accept: '*/*',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: `${usernameRef?.current?.value}`,
+            password: `${passwordRef?.current?.value}`,
+          }),
+        });
+        if (response.status != 200) {
+          alert('User not found');
+        } else {
+          const commits = await response.json();
+          localStorage.setItem('token', commits.token);
+          navigate('/collection');
+        }
+      }
+      login()
     }
-  }
-
-  function goToAccount() {
-    navigate("/account");
+  }, [clicked])
+  
+  function handleClick() {
+    setClicked(true);
+    setDisabled(true);
   }
 
   return (
@@ -80,12 +87,12 @@ function Login() {
           <Typography variant="h3" align="center">
             MTG Collection App
           </Typography>
-          <form onSubmit={loginHandler}>
+          <form>
             <Box
               sx={{
-                display: "block",
-                alignItems: "center",
-                justifyContent: "center",
+                display: 'block',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <TextField
@@ -95,7 +102,7 @@ function Login() {
                 label="Username"
                 id="username"
                 type="text"
-                sx={{ width: "100%" }}
+                sx={{ width: '100%' }}
                 inputRef={usernameRef}
               />
               <TextField
@@ -105,29 +112,34 @@ function Login() {
                 label="Password"
                 id="password"
                 type="password"
-                sx={{ width: "100%" }}
+                sx={{ width: '100%' }}
                 inputRef={passwordRef}
               />
               <Button
                 variant="contained"
                 type="submit"
                 sx={{
-                  display: "flex",
-                  margin: "auto",
+                  display: 'flex',
+                  margin: 'auto',
                 }}
+                onClick={handleClick}
+                disabled={disabled}
               >
-                Login
+               {disabled === false ? 'Login' : 'Loading...'}
               </Button>
             </Box>
           </form>
           <br />
           <Button
             variant="contained"
-            onClick={goToAccount}
-            sx={{
-              display: "flex",
-              margin: "auto",
+            onClick={() => {
+              navigate('/account');
             }}
+            sx={{
+              display: 'flex',
+              margin: 'auto',
+            }}
+            disabled={disabled}
           >
             Create Account
           </Button>
