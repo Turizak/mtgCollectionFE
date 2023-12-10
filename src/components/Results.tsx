@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from "@mui/material/Button";
+import Button from './AddToBtn'
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -33,37 +33,13 @@ declare module "@mui/material/styles" {
 // eslint-disable-next-line react/prop-types
 function Results({ card }) {
 
-  const baseURL = import.meta.env.VITE_APIURL;
-
-  async function addCardHandler() {
-    const response = await fetch(`${baseURL}/api/v1/account/cards`, {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.token}`,
-      },
-      body: JSON.stringify({
-        scry_id: `${card.id}`,
-        name: `${card.name}`,
-        price: `${card.price}`,
-        quantity: 1,
-      }),
-    });
-    const commits = await response.json();
-    // eslint-disable-next-line no-constant-condition
-    commits?.status === 200 || 201
-      ? alert("Added!")
-      : alert("Could not add - please try another card");
-  }
-
   return (
     <div style={{display: 'flex', flexDirection: 'column'}}>
             <ThemeProvider theme={theme}>
         {
         // eslint-disable-next-line react/prop-types
-        card.map((item, index)=>
-        <div key={index}>
+        card.map((item)=>
+        <div key={item.id}>
             <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2, marginTop: 3}} elevation={12}>
               <img src={item.image_uris.small}alt="card picture"/>
               <Typography
@@ -82,14 +58,7 @@ function Results({ card }) {
               >
                 {item.prices.usd > 0 ? `$${item.prices.usd}` : 'Price Not Available'}
               </Typography>
-              <Button
-                sx={{ display: "flex", margin: "auto"}}
-                color="secondary"
-                variant="contained"
-                onClick={addCardHandler}
-              >
-                Add to Collection
-              </Button>
+              <Button id={item.id} name={item.name} price={item.prices.usd}/>
             </Paper>
         </div>
         )

@@ -1,6 +1,5 @@
 import React from "react";
 import Login from "./components/Login";
-// import MTGSearch from "./components/MTGSearch";
 import Search from "./components/Search";
 import Account from "./components/Account";
 import Collection from "./components/Collection";
