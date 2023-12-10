@@ -2,7 +2,8 @@ import React from 'react'
 import Button from './AddToBtn'
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import Theme from './material ui/Theme';
 
 //MUI Custom Theme
 
@@ -19,28 +20,18 @@ declare module "@mui/material/styles" {
       };
     }
   }
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#BB2649",
-      },
-      secondary: {
-        main: "#26BB98",
-      },
-    },
-  });
 
 // eslint-disable-next-line react/prop-types
 function Results({ card }) {
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
-            <ThemeProvider theme={theme}>
+    <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: "center"}}>
+            <ThemeProvider theme={Theme}>
         {
         // eslint-disable-next-line react/prop-types
         card.map((item)=>
         <div key={item.id}>
-            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2, marginTop: 3}} elevation={12}>
+            <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2, margin: 1}} elevation={12}>
               <img src={item.image_uris.small}alt="card picture"/>
               <Typography
                 component="h2"

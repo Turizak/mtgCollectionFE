@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Header from "./Header";
 import Footer from "./Footer";
+import SearchIcon from '@mui/icons-material/Search';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 //MUI Custom Theme
@@ -69,7 +70,7 @@ function Search() {
     <>
       <Header />
       <ThemeProvider theme={theme}>
-        <Container maxWidth="xs">
+        <Container maxWidth="lg">
           <Box
             sx={{
               display: "block",
@@ -89,10 +90,10 @@ function Search() {
             />
             <Button
               variant="contained"
-              sx={{ display: "flex", margin: "auto" }}
+              sx={{ display: "flex", margin: 'auto', marginBottom: 2, padding: 1}}
               onClick={handleClick}
             >
-              Search Scryfall
+              <SearchIcon />
             </Button>
             <p>{loading}</p>
            <Results card={card} />
