@@ -42,10 +42,12 @@ function Search() {
     const [loading, setLoading] = useState('')
     const [inputValue, setInputValue] = useState('')
 
+    const scryfallURL = import.meta.env.VITE_SFURL;
+
     useEffect(() => {
       if (clicked) {
         async function fetchCards() {
-          const response = await fetch(`https://api.scryfall.com/cards/search?unique=prints&q=${inputValue}`)
+          const response = await fetch(`${scryfallURL}/cards/search?unique=prints&q=${inputValue}`)
           const data = await response.json();
           // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
           setCard([...data.data])
@@ -55,6 +57,8 @@ function Search() {
           setClicked(false)
       }
     }, [clicked])  
+
+    
 
     function handleClick(){
       setClicked(true)
