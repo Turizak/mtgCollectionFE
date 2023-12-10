@@ -3,6 +3,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material'
+import AddIcon from "@mui/icons-material/Add";
+import Theme from './material ui/Theme';
+import { ThemeProvider } from '@mui/material'
 
 function AddToBtn(props) {
     const [clicked, setClicked] = useState(false)
@@ -43,14 +46,17 @@ function AddToBtn(props) {
       }
 
   return (
+    <ThemeProvider theme={Theme}>
     <div><Button
     sx={{ display: "flex", margin: "auto"}}
     color="secondary"
     variant="contained"
     onClick={addCardHandler}
   >
-    {clicked === true ? `${added}`: 'Add to Collection'}
-  </Button></div>
+    {clicked === true ? `${added}`: <AddIcon />}
+  </Button>
+  </div>
+  </ThemeProvider>
   )
 }
 

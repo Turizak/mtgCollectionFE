@@ -8,7 +8,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import Theme from './material ui/Theme';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -23,16 +24,6 @@ declare module '@mui/material/styles' {
     };
   }
 }
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#BB2649',
-    },
-    secondary: {
-      main: '#26BB98',
-    },
-  },
-});
 
 function Login() {
   const [clicked, setClicked] = useState(false);
@@ -82,8 +73,8 @@ function Login() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <Container maxWidth="sm">
+      <ThemeProvider theme={Theme}>
+        <Container maxWidth="md">
           <Typography variant="h3" align="center">
             MTG Collection App
           </Typography>
