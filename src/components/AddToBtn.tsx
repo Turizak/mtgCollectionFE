@@ -52,7 +52,6 @@ function AddToBtn(props) {
     <TextField
               variant="outlined"
               margin="normal"
-              label="Quantity"
               id="qty"
               type="number"
               value={quantity}
