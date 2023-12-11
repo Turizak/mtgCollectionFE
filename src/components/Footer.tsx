@@ -40,6 +40,7 @@ function Footer() {
           position: "fixed",
           bottom: "0",
           backgroundColor: "primary.main",
+          zIndex: "1000"
         }}
         component="footer"
       >
