@@ -59,8 +59,6 @@ function Search() {
       }
     }, [clicked])  
 
-    
-
     function handleClick(){
       setClicked(true)
       setLoading('Loading...')

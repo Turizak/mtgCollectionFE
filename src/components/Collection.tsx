@@ -1,21 +1,22 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import Header from "./Header";
-import Footer from "./Footer";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
+import { useEffect, useState } from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Header from './Header';
+import Footer from './Footer';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // MUI Custom Theme
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   interface Theme {
     status: {
       danger: string;
@@ -31,37 +32,31 @@ declare module "@mui/material/styles" {
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#BB2649",
+      main: '#BB2649',
     },
     secondary: {
-      main: "#26BB98",
+      main: '#26BB98',
     },
   },
 });
 
 function Collection() {
-  const [myCollection, setMyCollection] = useState([]);
+  const [myCollection, setMyCollection] = useState<never[]>([]);
 
   const baseURL = import.meta.env.VITE_APIURL;
 
-  const getAccountCards = async () => {
-    await fetch(`${baseURL}/api/v1/account/prices`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.token}`,
-        "Content-type": "application/json",
-      },
-    });
+  async function getAccountCards() {
     const response = await fetch(`${baseURL}/api/v1/account/cards`, {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
     });
     const commits = await response.json();
-    setMyCollection(commits);
-  };
+    // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
+    setMyCollection([...commits]);
+  }
 
   useEffect(() => {
     getAccountCards();
@@ -71,10 +66,10 @@ function Collection() {
     const response = await fetch(
       `${baseURL}/api/v1/account/cards/${row.scry_id}`,
       {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       }
     );
@@ -91,23 +86,23 @@ function Collection() {
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>Card</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Price</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Qty</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}></TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Card</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Price</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Qty</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {myCollection &&
                 myCollection.map((row: any) => (
                   <TableRow
-                    key={row.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    key={row.scry_id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
                       {row.card_name}
                     </TableCell>
-                    <TableCell>{"$" + row.price}</TableCell>
+                    <TableCell>{'$' + row.price}</TableCell>
                     <TableCell>{row.quantity}</TableCell>
                     <TableCell>
                       <IconButton onClick={() => deleteCard(row)}>
