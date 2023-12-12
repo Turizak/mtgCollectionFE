@@ -50,8 +50,9 @@ function Search() {
         async function fetchCards() {
           const response = await fetch(`${scryfallURL}/cards/search?unique=prints&q=${inputValue}`)
           const data = await response.json();
+          const slicedData = data.data.slice(0,40)
           // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
-          setCard([...data.data])
+          setCard([...slicedData])
           setLoading('')
         }
           fetchCards()
