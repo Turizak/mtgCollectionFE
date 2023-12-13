@@ -33,7 +33,7 @@ function Results({ card }) {
         card.map((item)=>
         <div key={item.id}>
             <Paper sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: 250, padding: 2, margin: 1}} elevation={12}>
-              <img src={item.image_uris.small}alt="card picture"/>
+              <img src={item.image_uris.small} alt="card picture"/>
               <Typography
                 component="h2"
                 variant="subtitle1"
@@ -60,3 +60,4 @@ function Results({ card }) {
 }
 
 export default Results
+

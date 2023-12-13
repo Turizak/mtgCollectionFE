@@ -53,6 +53,7 @@ function AddToBtn(props) {
               variant="outlined"
               margin="normal"
               id="qty"
+              label="Quantity"
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}

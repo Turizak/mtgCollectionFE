@@ -1,0 +1,14 @@
+<img src={item.hasOwnProperty("image_uris") ? item.image_uris.small : "nothing"}alt="card picture"/>
+
+(...) after 25 characters
+
+Move search button to end of input
+Split quantity and add button
+
+Add loading... state to Collection
+
+Add img_uris to POST request
+
+Fix routes
+
+Install Jest
