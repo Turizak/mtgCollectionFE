@@ -30,6 +30,7 @@ function AddToBtn(props) {
                 name: `${props.name}`,
                 price: `${props.price}`,
                 quantity: +`${quantity}`,
+                image_uris: props.image_uris
               }),
             });
             const commits = await response.json();
