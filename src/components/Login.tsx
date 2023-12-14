@@ -59,6 +59,7 @@ function Login() {
         } else {
           const commits = await response.json();
           localStorage.setItem('token', commits.token);
+          localStorage.setItem('refreshToken', commits.refreshToken);
           navigate('/collection');
         }
       }
