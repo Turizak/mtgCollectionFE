@@ -7,7 +7,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import Theme from "./material ui/Theme"
 
 
 declare module "@mui/material/styles" {
@@ -23,16 +24,6 @@ declare module "@mui/material/styles" {
     };
   }
 }
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#BB2649",
-    },
-    secondary: {
-      main: "#26BB98",
-    },
-  },
-});
 
 function Account() {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -73,7 +64,7 @@ function Account() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={Theme}>
         <Container maxWidth="sm" sx={{ textAlign: "center" }}>
           <Typography variant="h3" gutterBottom>
             MTG Collection App

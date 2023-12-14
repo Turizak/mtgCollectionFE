@@ -8,7 +8,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ListIcon from "@mui/icons-material/List";
 import IconButton from "@mui/material/IconButton";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import Theme from "./material ui/Theme";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -23,16 +24,6 @@ declare module "@mui/material/styles" {
     };
   }
 }
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#BB2649",
-    },
-    secondary: {
-      main: "#26BB98",
-    },
-  },
-});
 
 function Header() {
   const navigate = useNavigate();
@@ -50,7 +41,7 @@ function Header() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={Theme}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>

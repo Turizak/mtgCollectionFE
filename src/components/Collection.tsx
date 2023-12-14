@@ -12,7 +12,8 @@ import Header from './Header';
 import Footer from './Footer';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import Theme from "./material ui/Theme"
 
 // MUI Custom Theme
 
@@ -29,16 +30,6 @@ declare module '@mui/material/styles' {
     };
   }
 }
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#BB2649',
-    },
-    secondary: {
-      main: '#26BB98',
-    },
-  },
-});
 
 function Collection() {
   const [myCollection, setMyCollection] = useState<never[]>([]);
@@ -80,7 +71,7 @@ function Collection() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={Theme}>
         <Header />
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
