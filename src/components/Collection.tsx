@@ -1,22 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
 import { useEffect, useState } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Header from './Header';
 import Footer from './Footer';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material/';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from "./material ui/Theme"
 
 // MUI Custom Theme
-
 declare module '@mui/material/styles' {
   interface Theme {
     status: {
@@ -31,8 +22,20 @@ declare module '@mui/material/styles' {
   }
 }
 
+// TS Interface for data from GET request
+interface AccountCards {
+  id: number,
+  account_id: string,
+  scry_id: string,
+  card_name: string,
+  price: string,
+  quantity: number,
+  image_uris: string
+}
+
 function Collection() {
-  const [myCollection, setMyCollection] = useState<never[]>([]);
+  const [myCollection, setMyCollection] = useState<AccountCards[]>([]);
+  const [loading, setLoading] = useState<string>('Loading...')
 
   const baseURL = import.meta.env.VITE_APIURL;
 
@@ -45,7 +48,7 @@ function Collection() {
       },
     });
     const commits = await response.json();
-    // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
+    setLoading('')
     setMyCollection([...commits]);
   }
 
@@ -84,6 +87,7 @@ function Collection() {
               </TableRow>
             </TableHead>
             <TableBody>
+            <p>{loading}</p>
               {myCollection &&
                 myCollection.map((row: any) => (
                   <TableRow

@@ -1,13 +1,7 @@
-/* eslint-disable no-inner-declarations */
-import React from 'react';
-import { useRef, useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
+import { useRef, useEffect, useState } from 'react';
 import Footer from './Footer';
+import { Button, TextField, Container, Box, Typography } from '@mui/material/';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
 
@@ -26,8 +20,8 @@ declare module '@mui/material/styles' {
 }
 
 function Login() {
-  const [clicked, setClicked] = useState(false);
-  const [disabled, setDisabled] = useState(false)
+  const [clicked, setClicked] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false)
 
   // useRef hooks used for login
   const usernameRef = useRef<HTMLInputElement>(null);

@@ -1,6 +1,5 @@
 import AddToBtn from './AddToBtn';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import { Paper, Typography, Container } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
 

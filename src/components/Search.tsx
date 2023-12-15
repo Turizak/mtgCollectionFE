@@ -1,12 +1,8 @@
-/* eslint-disable no-inner-declarations */
 import { useState, useEffect } from 'react';
 import Results from './Results';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
 import Header from './Header';
 import Footer from './Footer';
+import {Box, TextField, Container, Button } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
@@ -27,18 +23,13 @@ declare module '@mui/material/styles' {
   }
 }
 
-interface UnknownObject {
-  prop1?: string;
-  prop2?: string;
-}
-
 function Search() {
-  const [card, setCard] = useState<never[]>([]);
-  const [clicked, setClicked] = useState(false);
-  const [loading, setLoading] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [badData, setBadData] = useState([]);
-  const [goodData, setGoodData] = useState([]);
+  const [card, setCard] = useState<any>([]);
+  const [clicked, setClicked] = useState<boolean>(false);
+  const [loading, setLoading] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
+  const [badData, setBadData] = useState<any>([]);
+  const [goodData, setGoodData] = useState<any>([]);
 
   const scryfallURL = import.meta.env.VITE_SFURL;
 
@@ -62,24 +53,18 @@ function Search() {
   }, [clicked]);
 
   function filter(array: string[]) {
-    // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
-    array.forEach((item: UnknownObject) => {
+    array.forEach((item: any) => {
       switch (true) {
         case Object.hasOwn(item, 'image_uris') === false:
-          // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
           badData.push(item);
           break;
-        // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
         case item.prices.usd === null:
-          // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
           badData.push(item);
           break;
         case goodData.length >= 40:
-          // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
           badData.push(item);
           break;
         default:
-          // @ts-expect-error // Cannot find the correct type.  First type = Empty array.  Data = Array of objects.
           goodData.push(item);
       }
     });

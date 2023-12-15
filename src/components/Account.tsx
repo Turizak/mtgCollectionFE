@@ -1,15 +1,9 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import Footer from "./Footer";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import { Box, TextField, Button, Container, Typography } from "@mui/material/";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme from "./material ui/Theme"
-
 
 declare module "@mui/material/styles" {
   interface Theme {
