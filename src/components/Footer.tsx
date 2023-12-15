@@ -4,7 +4,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import IconButton from "@mui/material/IconButton";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import Theme from "./material ui/Theme"
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -19,21 +20,11 @@ declare module "@mui/material/styles" {
     };
   }
 }
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#BB2649",
-    },
-    secondary: {
-      main: "#26BB98",
-    },
-  },
-});
 
 function Footer() {
   return (
     <div>
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={Theme}>
       <Box
         sx={{
           width: "100%",
