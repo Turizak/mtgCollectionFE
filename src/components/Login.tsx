@@ -56,6 +56,8 @@ function Login() {
         });
         if (response.status != 200) {
           alert('User not found');
+          setClicked(false)
+          setDisabled(false)
         } else {
           const commits = await response.json();
           localStorage.setItem('token', commits.token);
