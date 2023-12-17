@@ -72,7 +72,7 @@ function Login() {
     <>
       <ThemeProvider theme={Theme}>
         <Container maxWidth="md">
-          <Typography variant="h3" align="center">
+          <Typography variant="h1" align="center" sx={{mt: 2}}>
             MTG Collection App
           </Typography>
           <form>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Results from './Results';
 import Header from './Header';
 import Footer from './Footer';
-import {Box, TextField, Container, Button } from '@mui/material/';
+import { Box, TextField, Container, Button } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
@@ -88,28 +88,30 @@ function Search() {
               justifyContent: 'center',
             }}
           >
-            <TextField
-              variant="outlined"
-              margin="normal"
-              label="Card"
-              id="card"
-              type="text"
-              sx={{ width: '100%' }}
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-            <Button
-              variant="contained"
-              sx={{
-                display: 'flex',
-                margin: 'auto',
-                marginBottom: 2,
-                padding: 1,
-              }}
-              onClick={handleClick}
-            >
-              <SearchIcon />
-            </Button>
+            <form onSubmit={handleClick}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                label="Card"
+                id="card"
+                type="text"
+                sx={{ width: '100%' }}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+              <Button
+                variant="contained"
+                sx={{
+                  display: 'flex',
+                  margin: 'auto',
+                  marginBottom: 2,
+                  padding: 1,
+                }}
+                onClick={handleClick}
+              >
+                <SearchIcon />
+              </Button>
+            </form>
             <p>{loading}</p>
             <Results card={card} />
           </Box>
