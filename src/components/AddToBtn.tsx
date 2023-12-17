@@ -1,14 +1,18 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-inner-declarations */
-import React from 'react'
 import { useEffect, useState } from 'react';
-import { Button } from '@mui/material'
-import TextField from '@mui/material/TextField';
+import { Button, TextField } from '@mui/material'
 import AddIcon from "@mui/icons-material/Add";
 import Theme from './material ui/Theme';
 import { ThemeProvider } from '@mui/material'
 
-function AddToBtn(props) {
+interface Props {
+  id: number,
+  name: string,
+  price: string,
+  quantity: number,
+  image_uris: string
+}
+
+function AddToBtn(props: Props) {
     const [clicked, setClicked] = useState(false)
     const [added, setAdded] = useState('')
     const [quantity, setQuantity] = useState('1')

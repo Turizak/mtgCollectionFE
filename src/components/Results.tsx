@@ -1,6 +1,5 @@
 import AddToBtn from './AddToBtn';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import { Paper, Typography, Container } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
 
@@ -20,13 +19,37 @@ declare module '@mui/material/styles' {
   }
 }
 
+interface Props {
+  id: number
+  name: string
+  set_name: string
+  prices: PropsPrices;
+  quantity: number
+  image_uris: PropsImages;
+}
+
+interface PropsPrices {
+  usd: string;
+  usd_foil: string | null;
+  usd_etched: string | null;
+}
+
+interface PropsImages {
+  small: string;
+  normal: string | null;
+  large: string | null;
+  png: string | null;
+  art_crop: string | null;
+  border_crop: string | null;
+}
+
 function Results({ card }) {
   return (
     <div
       style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
     >
       <ThemeProvider theme={Theme}>
-        {card.map((item) => (
+        {card.map((item: Props) => (
           <div key={item.id}>
             <Paper
               sx={{
@@ -54,7 +77,7 @@ function Results({ card }) {
               <Typography component="p" variant="h6" textAlign="center">
                 {item.prices.usd}
               </Typography>
-              <AddToBtn id={item.id} name={item.name} price={item.prices.usd} />
+              <AddToBtn id={item.id} name={item.name} price={item.prices.usd} quantity={0} image_uris={''} />
             </Paper>
           </div>
         ))}
