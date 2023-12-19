@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, TextField } from '@mui/material'
 import AddIcon from "@mui/icons-material/Add";
-import Theme from './material ui/Theme';
+import Theme from '../material ui/Theme';
 import { ThemeProvider } from '@mui/material'
 
 interface Props {
@@ -34,11 +34,10 @@ function AddToBtn(props: Props) {
                 name: `${props.name}`,
                 price: `${props.price}`,
                 quantity: +`${quantity}`,
-                image_uris: props.image_uris
+                image_uris: `${props.image_uris}`
               }),
             });
             const commits = await response.json();
-            // eslint-disable-next-line no-constant-condition
             commits?.status === 200 || 201
               ? setAdded("Added!")
               : setAdded("Could not add - please try another card");
