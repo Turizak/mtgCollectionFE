@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import Results from './Results';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import Header from './Header';
 import Footer from './Footer';
+import Results from './Results';
 import { Box, TextField, Container, Button } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { ThemeProvider } from '@mui/material/styles';
@@ -24,56 +25,28 @@ declare module '@mui/material/styles' {
 }
 
 function Search() {
-  const [card, setCard] = useState<any>([]);
-  const [clicked, setClicked] = useState<boolean>(false);
-  const [loading, setLoading] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
-  const [badData, setBadData] = useState<any>([]);
-  const [goodData, setGoodData] = useState<any>([]);
-
+  const [card, setCard] = useState<any>([])
+  
   const scryfallURL = import.meta.env.VITE_SFURL;
 
-  useEffect(() => {
-    if (clicked) {
-      async function fetchCards() {
-        const response = await fetch(
-          `${scryfallURL}/cards/search?unique=prints&q=${inputValue}`
-        );
-        const data = await response.json();
-        filter(data.data);
-        goodData.slice(0, 40);
-        setCard([...goodData]);
-        setLoading('');
-      }
-      fetchCards();
-      setClicked(false);
-      setBadData([]);
-      setGoodData([]);
+  const { isFetching, isError, data, error, refetch } = useQuery({
+    queryKey: ['results'], queryFn: getPeople, enabled: false
+  });
+
+  async function getPeople() {
+    const response = await fetch(
+      `${scryfallURL}/cards/search?unique=prints&q=${inputValue}`
+    );
+    if (!response.ok) {
+      throw new Error('There was a problem');
     }
-  }, [clicked]);
-
-  function filter(array: string[]) {
-    array.forEach((item: any) => {
-      switch (true) {
-        case Object.hasOwn(item, 'image_uris') === false:
-          badData.push(item);
-          break;
-        case item.prices.usd === null:
-          badData.push(item);
-          break;
-        case goodData.length >= 40:
-          badData.push(item);
-          break;
-        default:
-          goodData.push(item);
-      }
-    });
-    return goodData;
-  }
-
-  function handleClick() {
-    setClicked(true);
-    setLoading('Loading...');
+    const data = await response.json();
+    const filteredData = data.data
+      .filter((card: any) => card.prices.usd != null)
+      .filter((card: any) => card.image_uris != null)
+    setCard(filteredData.slice(0, 40))
+    return data
   }
 
   return (
@@ -81,40 +54,35 @@ function Search() {
       <Header />
       <ThemeProvider theme={Theme}>
         <Container maxWidth="lg">
-          <Box
-            sx={{
-              display: 'block',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <form onSubmit={handleClick}>
+        <Container maxWidth="lg" sx={{display: 'flex', justifyContent: 'center', margin: 2}}>
               <TextField
                 variant="outlined"
-                margin="normal"
                 label="Card"
                 id="card"
                 type="text"
-                sx={{ width: '100%' }}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
               />
               <Button
-                variant="contained"
-                sx={{
-                  display: 'flex',
-                  margin: 'auto',
-                  marginBottom: 2,
-                  padding: 1,
-                }}
-                onClick={handleClick}
+              variant='contained'
+              sx={{marginLeft: 1}}
+                onClick={()=> refetch()}
               >
                 <SearchIcon />
               </Button>
-            </form>
-            <p>{loading}</p>
-            <Results card={card} />
-          </Box>
+              </Container>
+              <Container maxWidth='lg' sx={{display: 'flex', flexWrap: 'wrap'}}>
+            {card != null ? (
+              card.map((item, index) => 
+              <Results key={index} item={item} />)
+    ) : isError ? (<span>Error: {error.message}</span>
+    ) : isFetching ? (
+        <span>Loading...</span>
+    ) : (
+        <span></span>
+    )}
+    </Container>
+
         </Container>
       </ThemeProvider>
       <Footer />

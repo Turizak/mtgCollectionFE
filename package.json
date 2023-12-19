@@ -12,8 +12,12 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.20",
+    "@mui/x-data-grid": "^6.18.5",
+    "@tanstack/react-query": "^5.14.1",
+    "@tanstack/react-query-devtools": "^5.14.2",
     "axios": "^1.2.1",
     "dotenv": "^16.0.3",
     "ll": "^1.2.0",
