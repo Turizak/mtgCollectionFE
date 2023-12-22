@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useRef, useEffect, useState } from 'react';
+import { useState } from 'react';
 import Footer from './Footer';
 import { Button, TextField, Container, Box, Typography } from '@mui/material/';
 import { ThemeProvider } from '@mui/material/styles';
@@ -19,13 +19,17 @@ declare module '@mui/material/styles' {
   }
 }
 
-function Login() {
-  const [clicked, setClicked] = useState<boolean>(false);
-  const [disabled, setDisabled] = useState<boolean>(false)
+interface LoginCredentials {
+  username: string,
+  password: string,
+}
 
-  // useRef hooks used for login
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+function Login() {
+  const [disabled, setDisabled] = useState<boolean>(false)
+  const [credentials, setCredentials] = useState<LoginCredentials>({
+    username: '',
+    password: ''
+  })
 
   // useNavigate hook from React Router
   const navigate = useNavigate();
@@ -34,8 +38,6 @@ function Login() {
   const baseURL = import.meta.env.VITE_APIURL;
 
   // Login
-  useEffect(()=>{
-    if (clicked) {
       async function login() {
         const response = await fetch(`${baseURL}/api/v1/login`, {
           method: 'POST',
@@ -44,13 +46,12 @@ function Login() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username: `${usernameRef?.current?.value}`,
-            password: `${passwordRef?.current?.value}`,
+            username: `${credentials?.username}`,
+            password: `${credentials?.password}`,
           }),
         });
         if (response.status != 200) {
           alert('User not found');
-          setClicked(false)
           setDisabled(false)
         } else {
           const commits = await response.json();
@@ -59,13 +60,17 @@ function Login() {
           navigate('/collection');
         }
       }
-      login()
-    }
-  }, [clicked])
   
   function handleClick() {
-    setClicked(true);
     setDisabled(true);
+    login()
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>){
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value
+    })
   }
 
   return (
@@ -89,9 +94,10 @@ function Login() {
                 margin="normal"
                 label="Username"
                 id="username"
+                name="username"
                 type="text"
                 sx={{ width: '100%' }}
-                inputRef={usernameRef}
+                onChange={handleChange}
               />
               <TextField
                 required
@@ -99,9 +105,10 @@ function Login() {
                 margin="normal"
                 label="Password"
                 id="password"
+                name="password"
                 type="password"
+                onChange={handleChange}
                 sx={{ width: '100%' }}
-                inputRef={passwordRef}
               />
               <Button
                 variant="contained"
