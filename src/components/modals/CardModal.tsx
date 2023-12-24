@@ -19,7 +19,7 @@ function CardModal({ open, close, image, quantity }) {
         </DialogContent>
         <DialogActions sx={{display: 'flex', justifyContent: 'center'}}>
           <IconButton>
-            <Check />
+            <Check/>
           </IconButton>
           <IconButton onClick={close} autoFocus>
             <Cancel />

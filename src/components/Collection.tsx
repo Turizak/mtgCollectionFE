@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useRouteLoaderData, useLoaderData } from 'react-router-dom';
+import { useQuery, useMutation, QueryClientProviderProps } from '@tanstack/react-query';
 import Header from './Header';
 import Footer from './Footer';
 import CollectionCards from './CollectionCards';
@@ -52,6 +53,7 @@ function Collection() {
   // const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const baseURL = import.meta.env.VITE_APIURL;
+  const token = useRouteLoaderData('root');
 
 
 
@@ -68,11 +70,15 @@ function Collection() {
     queryFn: getAccountCards,
   });
 
+  const { mutate } = useMutation({
+    mutationFn: deleteCard
+  })
+
   async function getAccountCards() {
     const response = await fetch(`${baseURL}/api/v1/account/cards`, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${localStorage.token}`,
+        Authorization: `Bearer ${token}`,
         'Content-type': 'application/json',
       },
     });
@@ -102,7 +108,7 @@ function Collection() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
-            <TableRow>
+            <TableRow color='secondary'>
               <TableCell sx={{ fontWeight: 'bold' }}>Card</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Price</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Qty</TableCell>
@@ -115,11 +121,22 @@ function Collection() {
                 <CollectionCards row={row} deleteCard={deleteCard}/>
               ))
             ) : isLoading ? (
-              <p>Loading...</p>
+              <TableRow>
+                <TableCell>
+                  Loading...
+                </TableCell>
+              </TableRow>
             ) : isError ? (
-              <p>Error: {error.message}</p>
+              <TableRow>
+                <TableCell>
+                {`Error: ${error.message}`}
+                </TableCell>
+                </TableRow>
             ) : (
-              <p></p>
+              <TableRow>
+                <TableCell>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import { Box, TextField, Button, Container, Typography } from "@mui/material/";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme from "./material ui/Theme"
+import { useMutation } from "@tanstack/react-query";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -20,6 +21,7 @@ declare module "@mui/material/styles" {
 }
 
 function Account() {
+
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -31,22 +33,18 @@ function Account() {
   // ENV Variables
   const baseURL = import.meta.env.VITE_APIURL;
 
-  // Login
-  async function submitHandler(e: React.FormEvent) {
-    e.preventDefault();
+  const { mutate } = useMutation({
+    mutationFn: createAccount
+  })
 
+  async function createAccount(body: any) {
     const response = await fetch(`${baseURL}/api/v1/account/create`, {
       method: "POST",
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        username: `${usernameRef?.current?.value}`,
-        password: `${passwordRef?.current?.value}`,
-        firstName: `${firstNameRef?.current?.value}`,
-        lastName: `${lastNameRef?.current?.value}`,
-      }),
+      body: JSON.stringify(body),
     });
     if (response.status != 202) {
       alert("There was an issue - Please reload and try again.");
@@ -54,6 +52,18 @@ function Account() {
       alert("Account created!");
       navigate("/");
     }
+  }
+
+  // Login
+  async function submitHandler(e: React.FormEvent) {
+    e.preventDefault();
+    const accountObject = {
+      username: `${usernameRef?.current?.value}`,
+      password: `${passwordRef?.current?.value}`,
+      firstName: `${firstNameRef?.current?.value}`,
+      lastName: `${lastNameRef?.current?.value}`,
+    }
+    mutate(accountObject)
   }
 
   return (
