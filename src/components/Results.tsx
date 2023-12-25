@@ -3,6 +3,7 @@ import { Paper, Typography, Container, TextField, Button} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
+import { useMutation } from '@tanstack/react-query';
 
 //MUI Custom Theme
 
@@ -50,6 +51,24 @@ function Results({ key, item }) {
 
   const baseURL = import.meta.env.VITE_APIURL;
 
+  const { mutate } = useMutation({
+    mutationFn: addCard
+  })
+
+  async function addCard(body) {
+    const response = await fetch(`${baseURL}/api/v1/account/cards`, {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.token}`,
+      },
+      body: JSON.stringify(body),
+    });
+    const commits = await response.json();
+    commits?.status === 200 || 201 ? setAdded(true) : setAdded(false)
+  }
+
   async function clickHandler() {
     const cardObject = {
       scry_id: `${item.id}`,
@@ -65,21 +84,9 @@ function Results({ key, item }) {
         border_crop: `${item.image_uris.border_crop}`,
       }
     }
-    addCard(cardObject)
+    mutate(cardObject)
   }
-  async function addCard(body) {
-    const response = await fetch(`${baseURL}/api/v1/account/cards`, {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.token}`,
-      },
-      body: JSON.stringify(body),
-    });
-    const commits = await response.json();
-    commits?.status === 200 || 201 ? setAdded(true) : setAdded(false)
-  }
+
   return (
     <div
       style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}

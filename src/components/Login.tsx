@@ -4,6 +4,8 @@ import Footer from './Footer';
 import { Button, TextField, Container, Box, Typography } from '@mui/material/';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
+import { useMutation } from '@tanstack/react-query';
+import { getTokenDuration } from '../utils/auth';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -19,17 +21,17 @@ declare module '@mui/material/styles' {
   }
 }
 
-interface LoginCredentials {
-  username: string,
-  password: string,
-}
+type LoginCredentials = {
+  username: string;
+  password: string;
+};
 
 function Login() {
-  const [disabled, setDisabled] = useState<boolean>(false)
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [credentials, setCredentials] = useState<LoginCredentials>({
     username: '',
-    password: ''
-  })
+    password: '',
+  });
 
   // useNavigate hook from React Router
   const navigate = useNavigate();
@@ -38,46 +40,54 @@ function Login() {
   const baseURL = import.meta.env.VITE_APIURL;
 
   // Login
-      async function login() {
-        const response = await fetch(`${baseURL}/api/v1/login`, {
-          method: 'POST',
-          headers: {
-            Accept: '*/*',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: `${credentials?.username}`,
-            password: `${credentials?.password}`,
-          }),
-        });
-        if (response.status != 200) {
-          alert('User not found');
-          setDisabled(false)
-        } else {
-          const commits = await response.json();
-          localStorage.setItem('token', commits.token);
-          localStorage.setItem('refreshToken', commits.refreshToken);
-          navigate('/collection');
-        }
-      }
-  
+  const { mutate } = useMutation({
+    mutationFn: login,
+  });
+
+  async function login(body: LoginCredentials) {
+    const response = await fetch(`${baseURL}/api/v1/login`, {
+      method: 'POST',
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (response.status != 200) {
+      alert('User not found');
+      setDisabled(false);
+    } else {
+      const commits = await response.json();
+      localStorage.setItem('token', commits.token);
+      localStorage.setItem('refreshToken', commits.refreshToken);
+// Creating an entry in local storage for the access token lifespan.  This is set manually and is not reading the contents of the JWT.
+      const expiration = new Date()
+      expiration.setMinutes(expiration.getMinutes() + 30)
+      localStorage.setItem('expiration', expiration.toISOString())
+      navigate('collection')
+  }}
+
   function handleClick() {
     setDisabled(true);
-    login()
+    const loginObject: LoginCredentials = {
+      username: `${credentials?.username}`,
+      password: `${credentials?.password}`,
+    };
+    mutate(loginObject);
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>){
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setCredentials({
       ...credentials,
-      [e.target.name]: e.target.value
-    })
+      [e.target.name]: e.target.value,
+    });
   }
 
   return (
     <>
       <ThemeProvider theme={Theme}>
         <Container maxWidth="md">
-          <Typography variant="h1" align="center" sx={{mt: 2}}>
+          <Typography variant="h1" align="center" sx={{ mt: 2 }}>
             MTG Collection App
           </Typography>
           <form>
@@ -120,7 +130,7 @@ function Login() {
                 onClick={handleClick}
                 disabled={disabled}
               >
-               {disabled === false ? 'Login' : 'Loading...'}
+                {disabled === false ? 'Login' : 'Loading...'}
               </Button>
             </Box>
           </form>
