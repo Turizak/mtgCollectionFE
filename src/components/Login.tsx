@@ -64,7 +64,7 @@ function Login() {
       const expiration = new Date()
       expiration.setMinutes(expiration.getMinutes() + 30)
       localStorage.setItem('expiration', expiration.toISOString())
-      navigate('collection')
+      navigate('search')
   }}
 
   function handleClick() {

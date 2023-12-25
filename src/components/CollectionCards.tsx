@@ -45,6 +45,7 @@ declare module '@mui/material/styles' {
 
 function CollectionCards({row, deleteCard}) {
     const [cardModalOpen, setCardModalOpen] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
     function cardModalHandleOpen() {
         setCardModalOpen(true);
@@ -52,6 +53,14 @@ function CollectionCards({row, deleteCard}) {
     
       function cardModalHandleClose() {
         setCardModalOpen(false);
+      }
+
+      function deleteModalHandleOpen() {
+        setDeleteModalOpen(true)
+      }
+
+      function deleteModalHandleClose() {
+        setDeleteModalOpen(false)
       }
 
   return (
@@ -104,9 +113,25 @@ function CollectionCards({row, deleteCard}) {
           </IconButton>
         </DialogActions>
       </Dialog>
-      <IconButton onClick={() => deleteCard(row)}>
+      <IconButton onClick={deleteModalHandleOpen}>
         <Delete fontSize="medium" />
       </IconButton>
+      <Dialog open={deleteModalOpen} onClose={deleteModalHandleClose}>
+        <DialogTitle id="alert-dialog-title">{'Delete Entry'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you would like to delete this entry?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <IconButton onClick={deleteModalHandleClose} autoFocus>
+            <Cancel />
+          </IconButton>
+          <IconButton onClick={() => deleteCard(row)}>
+            <Check />
+          </IconButton>
+        </DialogActions>
+      </Dialog>
     </TableCell>
   </TableRow>
 </>

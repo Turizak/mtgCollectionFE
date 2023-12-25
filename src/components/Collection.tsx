@@ -50,20 +50,8 @@ interface AccountCards {
 
 function Collection() {
 
-  // const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-
   const baseURL = import.meta.env.VITE_APIURL;
   const token = useRouteLoaderData('root');
-
-
-
-  // function deleteModalHandleOpen() {
-  //   setDeleteModalOpen(true);
-  // }
-
-  // function deleteModalHandleClose() {
-  //   setDeleteModalOpen(false);
-  // }
 
   const { isLoading, isError, data, error, refetch } = useQuery({
     queryKey: ['card'],
