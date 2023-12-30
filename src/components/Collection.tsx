@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
+import useRefresh from '../hooks/useRefresh';
 import AuthContext from '../context/AuthProvider';
 import Header from './Header';
 import Footer from './Footer';
@@ -13,21 +14,6 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-
-// MUI Custom Theme
-declare module '@mui/material/styles' {
-  interface Theme {
-    status: {
-      danger: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    status?: {
-      danger?: string;
-    };
-  }
-}
 
 // TS Interface for data from GET request
 interface AccountCards {
@@ -44,6 +30,7 @@ function Collection() {
   const baseURL = import.meta.env.VITE_APIURL;
   const { auth } = useContext(AuthContext)
   const token = auth.accessToken
+  const refresh = useRefresh()
 
   async function getAccountCards() {
     try {
@@ -59,10 +46,14 @@ function Collection() {
       }
       const commits = await response.json();
       return commits;
-    } catch (error) {
-      console.error('Error fetching data: ', error);
+    } catch (error: any) {
+      if (error.message.startsWith('406')) {
+      refresh()
+     } else {
+      console.error(error);
     }
   }
+}
 
   async function deleteCard(row: any) {
     try {

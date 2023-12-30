@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useContext } from 'react';
+import useRefresh from '../hooks/useRefresh';
+import AuthContext from '../context/AuthProvider';
 import { Paper, Typography, Container, TextField, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { ThemeProvider } from '@mui/material/styles';
@@ -48,9 +51,12 @@ interface PropsImages {
 function Results({ key, item }) {
   const [quantity, setQuantity] = useState<number>(1);
   const [added, setAdded] = useState<boolean>(false);
+  const {auth} = useContext(AuthContext)
+  const refresh = useRefresh()
 
   const baseURL = import.meta.env.VITE_APIURL;
-  const token = localStorage.token
+  // const token = auth.accessToken
+  const token = auth.accessToken
 
   const { mutate } = useMutation({
     mutationFn: addCard,
@@ -73,8 +79,12 @@ function Results({ key, item }) {
       const commits = await response.json();
       commits?.status === 200 || 201 ? setAdded(true) : setAdded(false);
     }
-    catch (error) {
-      console.error(error)
+    catch (error: any) {
+       if (error.message.startsWith('406')) {
+        refresh()
+       } else {
+        console.log(error)
+       }
     }
   }
 

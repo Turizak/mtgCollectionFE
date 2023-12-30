@@ -22,7 +22,7 @@ function Login() {
   const navigate = useNavigate();
 
   // Calling custom hook(s)
-const { setAuth } = useContext(AuthContext)
+const { auth, setAuth } = useContext(AuthContext)
 
   // ENV Variables
   const baseURL = import.meta.env.VITE_APIURL;
@@ -48,10 +48,9 @@ const { setAuth } = useContext(AuthContext)
     const commits = await response.json();
     const accessToken = commits.token
     const refreshToken = commits.refreshToken
-    localStorage.setItem('accessToken', commits.token);
-    localStorage.setItem('refreshToken', commits.refreshToken);
     setAuth({ accessToken, refreshToken })
     navigate('/')
+    console.log('Access Token Granted')
     } 
     catch (error) {
       console.error(error)
