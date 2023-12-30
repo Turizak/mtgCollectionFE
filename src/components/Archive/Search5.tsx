@@ -5,7 +5,7 @@ import Footer from '../Footer';
 import { Box, TextField, Container, Button } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { ThemeProvider } from '@mui/material/styles';
-import Theme from '../material ui/Theme';
+import Theme from '../../context/Theme';
 
 //MUI Custom Theme
 

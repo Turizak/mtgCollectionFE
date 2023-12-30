@@ -6,23 +6,7 @@ import Results from './Results';
 import { TextField, Container, Button } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 import { ThemeProvider } from '@mui/material/styles';
-import Theme from './material ui/Theme';
-
-//MUI Custom Theme
-
-declare module '@mui/material/styles' {
-  interface Theme {
-    status: {
-      danger: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    status?: {
-      danger?: string;
-    };
-  }
-}
+import Theme from '../context/Theme';
 
 function Search() {
   const [inputValue, setInputValue] = useState<string>('');
@@ -50,39 +34,48 @@ function Search() {
     enabled: false,
   });
 
+  function handleClick(e) {
+    e.preventDefault();
+    refetch()
+  }
+
   return (
     <>
       <Header />
       <ThemeProvider theme={Theme}>
         <Container maxWidth="lg">
-          <Container
-            maxWidth="lg"
-            sx={{ display: 'flex', justifyContent: 'center', margin: 2 }}
-          >
-            <TextField
-              variant="outlined"
-              label="Card"
-              id="card"
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-            <Button
-              variant="contained"
-              sx={{ marginLeft: 1 }}
-              onClick={() => refetch()}
+          <form>
+            <Container
+              maxWidth="lg"
+              sx={{ display: 'flex', justifyContent: 'center', margin: 2 }}
             >
-              <SearchIcon />
-            </Button>
-          </Container>
+              <TextField
+                variant="outlined"
+                label="Card"
+                id="card"
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+              <Button
+                variant="contained"
+                sx={{ marginLeft: 1 }}
+                type="submit"
+                onClick={handleClick}
+              >
+                <SearchIcon />
+              </Button>
+            </Container>
+          </form>
           <Container maxWidth="lg" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            { (isFetching) ? <span>Loading...</span> :
-              (isError) ? <span>Error: {error.message}</span> :            
-            card &&
-              card.map((item, index) => <Results 
-              key={index} 
-              item={item} 
-              />)}
+            {isFetching ? (
+              <span>Loading...</span>
+            ) : isError ? (
+              <span>Error: {error.message}</span>
+            ) : (
+              card &&
+              card.map((item, index) => <Results key={index} item={item} />)
+            )}
           </Container>
         </Container>
       </ThemeProvider>

@@ -3,7 +3,7 @@ import { useRef } from "react";
 import Footer from "./Footer";
 import { Box, TextField, Button, Container, Typography } from "@mui/material/";
 import { ThemeProvider } from "@mui/material/styles";
-import Theme from "./material ui/Theme"
+import Theme from "../context/Theme"
 import { useMutation } from "@tanstack/react-query";
 
 declare module "@mui/material/styles" {
@@ -71,7 +71,7 @@ function Account() {
     <>
       <ThemeProvider theme={Theme}>
         <Container maxWidth="sm" sx={{ textAlign: "center" }}>
-          <Typography variant="h1" align="center" sx={{ mt: 2 }} gutterBottom>
+          <Typography variant="h3" align="center" sx={{ mt: 2 }} gutterBottom>
             MTG Collection App
           </Typography>
           <form onSubmit={submitHandler}>

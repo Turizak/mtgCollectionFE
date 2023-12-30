@@ -1,27 +1,10 @@
 import { Container, Box, Typography } from "@mui/material"
 import GitHubIcon from "@mui/icons-material/GitHub";
 import IconButton from "@mui/material/IconButton";
-import { ThemeProvider } from "@mui/material/styles";
-import Theme from "./material ui/Theme"
-
-declare module "@mui/material/styles" {
-  interface Theme {
-    status: {
-      danger: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    status?: {
-      danger?: string;
-    };
-  }
-}
 
 function Footer() {
   return (
     <>
-    <ThemeProvider theme={Theme}>
       <Box
         sx={{
           width: "100%",
@@ -84,7 +67,6 @@ function Footer() {
           </Box>
         </Container>
       </Box>
-    </ThemeProvider>
   </>
   )
 }

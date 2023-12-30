@@ -3,22 +3,6 @@ import { AppBar, Box, Toolbar, Typography, IconButton } from '@mui/material/';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ListIcon from '@mui/icons-material/List';
-import { ThemeProvider } from '@mui/material/styles';
-import Theme from './material ui/Theme';
-
-declare module '@mui/material/styles' {
-  interface Theme {
-    status: {
-      danger: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    status?: {
-      danger?: string;
-    };
-  }
-}
 
 function Header() {
   const navigate = useNavigate()
@@ -35,7 +19,6 @@ function Header() {
   }
 
   return (
-    <ThemeProvider theme={Theme}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
@@ -60,7 +43,6 @@ function Header() {
           </Toolbar>
         </AppBar>
       </Box>
-    </ThemeProvider>
   );
 }
 
