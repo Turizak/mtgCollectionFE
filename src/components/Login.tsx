@@ -1,26 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
+import AuthContext from '../context/AuthProvider';
 import Footer from './Footer';
 import { Button, TextField, Container, Box, Typography } from '@mui/material/';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
 import { useMutation } from '@tanstack/react-query';
-import { getTokenDuration } from '../utils/auth';
 
-declare module '@mui/material/styles' {
-  interface Theme {
-    status: {
-      danger: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    status?: {
-      danger?: string;
-    };
-  }
-}
-
+// Types
 type LoginCredentials = {
   username: string;
   password: string;
@@ -28,13 +15,14 @@ type LoginCredentials = {
 
 function Login() {
   const [disabled, setDisabled] = useState<boolean>(false);
-  const [credentials, setCredentials] = useState<LoginCredentials>({
-    username: '',
-    password: '',
-  });
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   // useNavigate hook from React Router
   const navigate = useNavigate();
+
+  // Calling custom hook(s)
+const { auth, setAuth } = useContext(AuthContext)
 
   // ENV Variables
   const baseURL = import.meta.env.VITE_APIURL;
@@ -45,42 +33,39 @@ function Login() {
   });
 
   async function login(body: LoginCredentials) {
-    const response = await fetch(`${baseURL}/api/v1/login`, {
-      method: 'POST',
-      headers: {
-        Accept: '*/*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-    if (response.status != 200) {
-      alert('User not found');
-      setDisabled(false);
-    } else {
-      const commits = await response.json();
-      localStorage.setItem('token', commits.token);
-      localStorage.setItem('refreshToken', commits.refreshToken);
-// Creating an entry in local storage for the access token lifespan.  This is set manually and is not reading the contents of the JWT.
-      const expiration = new Date()
-      expiration.setMinutes(expiration.getMinutes() + 30)
-      localStorage.setItem('expiration', expiration.toISOString())
-      navigate('collection')
-  }}
+    try {
+      const response = await fetch(`${baseURL}/api/v1/login`, {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+      throw new Error(`${response.status}`)
+    }
+    const commits = await response.json();
+    const accessToken = commits.token
+    const refreshToken = commits.refreshToken
+    setAuth({ accessToken, refreshToken })
+    navigate('/')
+    console.log('Access Token Granted')
+    } 
+    catch (error) {
+      console.error(error)
+      alert(`${error}`)
+      setDisabled(false)
+    }
+  }
 
   function handleClick() {
     setDisabled(true);
     const loginObject: LoginCredentials = {
-      username: `${credentials?.username}`,
-      password: `${credentials?.password}`,
+      username: `${usernameRef?.current?.value}`,
+      password: `${passwordRef?.current?.value}`,
     };
     mutate(loginObject);
-  }
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setCredentials({
-      ...credentials,
-      [e.target.name]: e.target.value,
-    });
   }
 
   return (
@@ -107,7 +92,7 @@ function Login() {
                 name="username"
                 type="text"
                 sx={{ width: '100%' }}
-                onChange={handleChange}
+                inputRef={usernameRef}
               />
               <TextField
                 required
@@ -117,7 +102,7 @@ function Login() {
                 id="password"
                 name="password"
                 type="password"
-                onChange={handleChange}
+                inputRef={passwordRef}
                 sx={{ width: '100%' }}
               />
               <Button

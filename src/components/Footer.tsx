@@ -20,7 +20,7 @@ declare module "@mui/material/styles" {
 
 function Footer() {
   return (
-    <div>
+    <>
     <ThemeProvider theme={Theme}>
       <Box
         sx={{
@@ -85,7 +85,7 @@ function Footer() {
         </Container>
       </Box>
     </ThemeProvider>
-  </div>
+  </>
   )
 }
 

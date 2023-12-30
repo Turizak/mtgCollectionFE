@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Paper, Typography, Container, TextField, Button} from '@mui/material'
+import { useContext } from 'react';
+import useRefresh from '../hooks/useRefresh';
+import AuthContext from '../context/AuthProvider';
+import { Paper, Typography, Container, TextField, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
@@ -22,11 +25,11 @@ declare module '@mui/material/styles' {
 }
 
 interface Props {
-  id: number
-  name: string
-  set_name: string
+  id: number;
+  name: string;
+  set_name: string;
   prices: PropsPrices;
-  quantity: number
+  quantity: number;
   image_uris: PropsImages;
 }
 
@@ -46,27 +49,43 @@ interface PropsImages {
 }
 
 function Results({ key, item }) {
-  const [quantity, setQuantity] = useState<number>(0)
-  const [added, setAdded] = useState<boolean>(false)
+  const [quantity, setQuantity] = useState<number>(1);
+  const [added, setAdded] = useState<boolean>(false);
+  const {auth} = useContext(AuthContext)
+  const refresh = useRefresh()
 
   const baseURL = import.meta.env.VITE_APIURL;
+  // const token = auth.accessToken
+  const token = auth.accessToken
 
   const { mutate } = useMutation({
-    mutationFn: addCard
-  })
+    mutationFn: addCard,
+  });
 
-  async function addCard(body) {
-    const response = await fetch(`${baseURL}/api/v1/account/cards`, {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.token}`,
-      },
-      body: JSON.stringify(body),
-    });
-    const commits = await response.json();
-    commits?.status === 200 || 201 ? setAdded(true) : setAdded(false)
+  async function addCard(body: any) {
+    try {
+      const response = await fetch(`${baseURL}/api/v1/account/cards`, {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+        throw new Error(`${response.status}`)
+      }
+      const commits = await response.json();
+      commits?.status === 200 || 201 ? setAdded(true) : setAdded(false);
+    }
+    catch (error: any) {
+       if (error.message.startsWith('406')) {
+        refresh()
+       } else {
+        console.log(error)
+       }
+    }
   }
 
   async function clickHandler() {
@@ -82,9 +101,9 @@ function Results({ key, item }) {
         png: `${item.image_uris.png}`,
         art_crop: `${item.image_uris.art_crop}`,
         border_crop: `${item.image_uris.border_crop}`,
-      }
-    }
-    mutate(cardObject)
+      },
+    };
+    mutate(cardObject);
   }
 
   return (
@@ -92,7 +111,9 @@ function Results({ key, item }) {
       style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
     >
       <ThemeProvider theme={Theme}>
-        {item.length === 0 ? <span>No Results</span> : 
+        {item.length === 0 ? (
+          <span>No Results</span>
+        ) : (
           <div key={key}>
             <Paper
               sx={{
@@ -120,21 +141,27 @@ function Results({ key, item }) {
               <Typography component="p" variant="h6" textAlign="center">
                 ${item.prices.usd}
               </Typography>
-              <Container sx={{display: 'flex', margin: 2}}>
-              <TextField
-              variant="outlined"
-              id="qty"
-              label="Quantity"
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))} />
-              <Button variant='contained' color='secondary' sx={{marginLeft: 1}} onClick={clickHandler}>
-                {added == false ? <AddIcon/> : 'Added!'}
-              </Button>
+              <Container sx={{ display: 'flex', margin: 2 }}>
+                <TextField
+                  variant="outlined"
+                  id="qty"
+                  label="Quantity"
+                  type="number"
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                />
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  sx={{ marginLeft: 1 }}
+                  onClick={clickHandler}
+                >
+                  {added == false ? <AddIcon /> : 'Added!'}
+                </Button>
               </Container>
             </Paper>
           </div>
-        }
+        )}
       </ThemeProvider>
     </div>
   );

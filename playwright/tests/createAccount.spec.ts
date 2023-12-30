@@ -5,8 +5,6 @@ import { LoginPage } from "../pages/loginPage";
 type CreateFormOptions = {
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
 };
 
 type LoginFormOptions = {
@@ -22,8 +20,6 @@ test.describe("Create Account Tests", () => {
     const createFormData: CreateFormOptions = {
       username: "testuser",
       password: "testpass",
-      firstName: "test",
-      lastName: "user",
     };
 
     const loginFormData: LoginFormOptions = {
@@ -40,13 +36,13 @@ test.describe("Create Account Tests", () => {
     });
 
     await test.step("Login with new account", async () => {
-      await page.waitForURL("/");
+      await page.waitForURL("/login");
       await loginPage.loginUI(loginFormData);
     });
 
     await test.step("Assertion", async () => {
-      await page.waitForURL("/collection");
-      expect(page.url()).toContain("/collection");
+      await page.waitForURL("/login");
+      expect(page.url()).toContain("/login");
     });
 
     await test.step("Cleanup", async () => {

@@ -1,12 +1,12 @@
-import { useNavigate, Link } from "react-router-dom";
-import { AppBar, Box, Toolbar, Typography, IconButton } from "@mui/material/";
-import LogoutIcon from "@mui/icons-material/Logout";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import ListIcon from "@mui/icons-material/List";
-import { ThemeProvider } from "@mui/material/styles";
-import Theme from "./material ui/Theme";
+import { useNavigate, Link } from 'react-router-dom';
+import { AppBar, Box, Toolbar, Typography, IconButton } from '@mui/material/';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import ListIcon from '@mui/icons-material/List';
+import { ThemeProvider } from '@mui/material/styles';
+import Theme from './material ui/Theme';
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   interface Theme {
     status: {
       danger: string;
@@ -21,10 +21,9 @@ declare module "@mui/material/styles" {
 }
 
 function Header() {
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
   function goToCollection() {
-    navigate("/collection");
+    navigate('/')
   }
 
   function goToMTGSearch() {
@@ -32,7 +31,7 @@ function Header() {
   }
   function goToLogin() {
     localStorage.clear();
-    navigate("/");
+    navigate('/login')
   }
 
   return (
@@ -42,20 +41,20 @@ function Header() {
           <Toolbar>
             <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
               <Link
-                to="/collection"
-                style={{ textDecoration: "none", color: "white" }}
+                to="/"
+                style={{ textDecoration: 'none', color: 'white' }}
               >
                 MTG Collection App
               </Link>
             </Typography>
-            <IconButton onClick={goToMTGSearch} style={{ color: "white" }}>
+            <IconButton onClick={goToMTGSearch} style={{ color: 'white' }}>
               <AddBoxIcon fontSize="medium" />
             </IconButton>
-            <IconButton onClick={goToCollection} style={{ color: "white" }}>
+            <IconButton onClick={goToCollection} style={{ color: 'white' }}>
               <ListIcon fontSize="medium" />
             </IconButton>
 
-            <IconButton onClick={goToLogin} style={{ color: "white" }}>
+            <IconButton onClick={goToLogin} style={{ color: 'white' }}>
               <LogoutIcon fontSize="medium" />
             </IconButton>
           </Toolbar>
