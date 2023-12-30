@@ -1,6 +1,11 @@
 import { createTheme } from '@mui/material/styles';
 
 const Theme = createTheme({
+  palette: {
+    primary: {
+      main: 'hsla(0, 0%, 50%,1)',
+    }
+  }
   /* 
   palette: {
     primary: {

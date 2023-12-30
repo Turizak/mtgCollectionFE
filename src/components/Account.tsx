@@ -1,24 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import Footer from "./Footer";
 import { Box, TextField, Button, Container, Typography } from "@mui/material/";
-import { ThemeProvider } from "@mui/material/styles";
-import Theme from "../context/Theme"
 import { useMutation } from "@tanstack/react-query";
-
-declare module "@mui/material/styles" {
-  interface Theme {
-    status: {
-      danger: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    status?: {
-      danger?: string;
-    };
-  }
-}
 
 function Account() {
 
@@ -69,9 +52,8 @@ function Account() {
 
   return (
     <>
-      <ThemeProvider theme={Theme}>
-        <Container maxWidth="sm" sx={{ textAlign: "center" }}>
-          <Typography variant="h3" align="center" sx={{ mt: 2 }} gutterBottom>
+        <Container maxWidth="sm" sx={{ textAlign: "center"}}>
+          <Typography variant="h2" align="center" sx={{ mt: 2 }} gutterBottom>
             MTG Collection App
           </Typography>
           <form onSubmit={submitHandler}>
@@ -116,8 +98,6 @@ function Account() {
             </Box>
           </form>
         </Container>
-        <Footer />
-      </ThemeProvider>
     </>
   );
 }

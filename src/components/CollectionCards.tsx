@@ -14,21 +14,6 @@ import {
 import { Edit, Delete, Cancel, Check } from '@mui/icons-material/';
 import { useMutation } from '@tanstack/react-query';
 
-// MUI Custom Theme
-declare module '@mui/material/styles' {
-  interface Theme {
-    status: {
-      danger: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    status?: {
-      danger?: string;
-    };
-  }
-}
-
 // TS Interface for data from GET request
 interface AccountCards {
   id: number;

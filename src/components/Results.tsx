@@ -8,11 +8,11 @@ import { useMutation } from '@tanstack/react-query';
 function Results({ key, item }) {
   const [quantity, setQuantity] = useState<number>(1);
   const [added, setAdded] = useState<boolean>(false);
-  const {auth} = useContext(AuthContext)
-  const refresh = useRefresh()
+  const { auth } = useContext(AuthContext);
+  const refresh = useRefresh();
 
   const baseURL = import.meta.env.VITE_APIURL;
-  const token = auth.accessToken
+  const token = auth.accessToken;
 
   const { mutate } = useMutation({
     mutationFn: addCard,
@@ -30,17 +30,16 @@ function Results({ key, item }) {
         body: JSON.stringify(body),
       });
       if (!response.ok) {
-        throw new Error(`${response.status}`)
+        throw new Error(`${response.status}`);
       }
       const commits = await response.json();
       commits?.status === 200 || 201 ? setAdded(true) : setAdded(false);
-    }
-    catch (error: any) {
-       if (error.message.startsWith('406')) {
-        refresh()
-       } else {
-        console.log(error)
-       }
+    } catch (error: any) {
+      if (error.message.startsWith('406')) {
+        refresh();
+      } else {
+        console.log(error);
+      }
     }
   }
 
@@ -63,9 +62,8 @@ function Results({ key, item }) {
   }
 
   return (
-    <div
-      style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-    >
+    <div>
+      <Container>
         {item.length === 0 ? (
           <span>No Results</span>
         ) : (
@@ -76,11 +74,11 @@ function Results({ key, item }) {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: 250,
+                width: "15.625rem",
                 padding: 2,
                 margin: 1,
               }}
-              elevation={12}
+              elevation={3}
             >
               <img src={item.image_uris.small} alt="card picture" />
               <Typography
@@ -116,6 +114,7 @@ function Results({ key, item }) {
             </Paper>
           </div>
         )}
+      </Container>
     </div>
   );
 }

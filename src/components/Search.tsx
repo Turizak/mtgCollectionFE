@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Header from './Header';
-import Footer from './Footer';
 import Results from './Results';
 import { TextField, Container, Button } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
-import { ThemeProvider } from '@mui/material/styles';
-import Theme from '../context/Theme';
 
 function Search() {
   const [inputValue, setInputValue] = useState<string>('');
@@ -42,7 +39,6 @@ function Search() {
   return (
     <>
       <Header />
-      <ThemeProvider theme={Theme}>
         <Container maxWidth="lg">
           <form>
             <Container
@@ -78,8 +74,7 @@ function Search() {
             )}
           </Container>
         </Container>
-      </ThemeProvider>
-      <Footer />
+        <div style={{height: '100px'}}></div>
     </>
   );
 }

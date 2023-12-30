@@ -26,8 +26,8 @@ test.describe("Login Page Tests", () => {
     });
 
     await test.step("Assertion", async () => {
-      await page.waitForURL("/");
-      expect(page.url()).toContain("/");
+      await page.waitForURL("/login");
+      expect(page.url()).toContain("/login");
     });
   });
 
