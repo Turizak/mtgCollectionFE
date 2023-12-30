@@ -1,10 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthProvider';
-import Footer from './Footer';
 import { Button, TextField, Container, Box, Typography } from '@mui/material/';
-import { ThemeProvider } from '@mui/material/styles';
-import Theme from './material ui/Theme';
 import { useMutation } from '@tanstack/react-query';
 
 // Types
@@ -70,9 +67,8 @@ const { auth, setAuth } = useContext(AuthContext)
 
   return (
     <>
-      <ThemeProvider theme={Theme}>
         <Container maxWidth="md">
-          <Typography variant="h1" align="center" sx={{ mt: 2 }}>
+          <Typography variant="h3" align="center" sx={{ mt: 2 }}>
             MTG Collection App
           </Typography>
           <form>
@@ -135,8 +131,6 @@ const { auth, setAuth } = useContext(AuthContext)
           </Button>
           <br />
         </Container>
-      </ThemeProvider>
-      <Footer />
     </>
   );
 }

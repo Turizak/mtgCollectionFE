@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { ThemeProvider } from '@mui/material/styles';
-import Theme from "../material ui/Theme"
+import Theme from "../../context/Theme"
 
 // MUI Custom Theme
 declare module '@mui/material/styles' {

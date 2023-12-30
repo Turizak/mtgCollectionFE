@@ -1,52 +1,9 @@
-import { useState } from 'react';
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import useRefresh from '../hooks/useRefresh';
 import AuthContext from '../context/AuthProvider';
 import { Paper, Typography, Container, TextField, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { ThemeProvider } from '@mui/material/styles';
-import Theme from './material ui/Theme';
 import { useMutation } from '@tanstack/react-query';
-
-//MUI Custom Theme
-
-declare module '@mui/material/styles' {
-  interface Theme {
-    status: {
-      danger: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    status?: {
-      danger?: string;
-    };
-  }
-}
-
-interface Props {
-  id: number;
-  name: string;
-  set_name: string;
-  prices: PropsPrices;
-  quantity: number;
-  image_uris: PropsImages;
-}
-
-interface PropsPrices {
-  usd: string;
-  usd_foil: string | null;
-  usd_etched: string | null;
-}
-
-interface PropsImages {
-  small: string;
-  normal: string | null;
-  large: string | null;
-  png: string | null;
-  art_crop: string | null;
-  border_crop: string | null;
-}
 
 function Results({ key, item }) {
   const [quantity, setQuantity] = useState<number>(1);
@@ -55,7 +12,6 @@ function Results({ key, item }) {
   const refresh = useRefresh()
 
   const baseURL = import.meta.env.VITE_APIURL;
-  // const token = auth.accessToken
   const token = auth.accessToken
 
   const { mutate } = useMutation({
@@ -110,7 +66,6 @@ function Results({ key, item }) {
     <div
       style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
     >
-      <ThemeProvider theme={Theme}>
         {item.length === 0 ? (
           <span>No Results</span>
         ) : (
@@ -152,7 +107,6 @@ function Results({ key, item }) {
                 />
                 <Button
                   variant="contained"
-                  color="secondary"
                   sx={{ marginLeft: 1 }}
                   onClick={clickHandler}
                 >
@@ -162,7 +116,6 @@ function Results({ key, item }) {
             </Paper>
           </div>
         )}
-      </ThemeProvider>
     </div>
   );
 }
