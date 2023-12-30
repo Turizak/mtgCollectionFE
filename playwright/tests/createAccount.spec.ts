@@ -36,13 +36,13 @@ test.describe("Create Account Tests", () => {
     });
 
     await test.step("Login with new account", async () => {
-      await page.waitForURL("/");
+      await page.waitForURL("/login");
       await loginPage.loginUI(loginFormData);
     });
 
     await test.step("Assertion", async () => {
-      await page.waitForURL("/");
-      expect(page.url()).toContain("/");
+      await page.waitForURL("/login");
+      expect(page.url()).toContain("/login");
     });
 
     await test.step("Cleanup", async () => {
