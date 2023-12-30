@@ -5,7 +5,6 @@ import { Button, TextField, Container, Box, Typography } from '@mui/material/';
 import { ThemeProvider } from '@mui/material/styles';
 import Theme from './material ui/Theme';
 import { useMutation } from '@tanstack/react-query';
-import { getTokenDuration } from '../utils/auth';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -45,27 +44,29 @@ function Login() {
   });
 
   async function login(body: LoginCredentials) {
-    const response = await fetch(`${baseURL}/api/v1/login`, {
-      method: 'POST',
-      headers: {
-        Accept: '*/*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-    if (response.status != 200) {
-      alert('User not found');
-      setDisabled(false);
-    } else {
-      const commits = await response.json();
-      localStorage.setItem('token', commits.token);
-      localStorage.setItem('refreshToken', commits.refreshToken);
-// Creating an entry in local storage for the access token lifespan.  This is set manually and is not reading the contents of the JWT.
-      const expiration = new Date()
-      expiration.setMinutes(expiration.getMinutes() + 30)
-      localStorage.setItem('expiration', expiration.toISOString())
-      navigate('search')
-  }}
+    try {
+      const response = await fetch(`${baseURL}/api/v1/login`, {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+      throw new Error(`${response.status}`)
+    }
+    const commits = await response.json();
+    localStorage.setItem('token', commits.token);
+    localStorage.setItem('refreshToken', commits.refreshToken);
+    navigate('search')
+    } 
+    catch (error) {
+      console.error(error)
+      alert(`${error}`)
+      setDisabled(false)
+    }
+  }
 
   function handleClick() {
     setDisabled(true);

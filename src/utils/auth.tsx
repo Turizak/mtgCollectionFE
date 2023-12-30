@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import { redirect } from "react-router-dom";
 
 export function getTokenDuration() {

@@ -24,35 +24,38 @@ function Account() {
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
 
   // useNavigate hook from React Router
   const navigate = useNavigate();
 
   // ENV Variables
   const baseURL = import.meta.env.VITE_APIURL;
+  const url = `${baseURL}/api/v1/account/create`
+
+  async function createAccount(body: any) {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+        throw new Error(`${response.status}`)
+      }
+      alert("Account created!");
+      navigate("/");
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
 
   const { mutate } = useMutation({
     mutationFn: createAccount
   })
-
-  async function createAccount(body: any) {
-    const response = await fetch(`${baseURL}/api/v1/account/create`, {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    if (response.status != 202) {
-      alert("There was an issue - Please reload and try again.");
-    } else {
-      alert("Account created!");
-      navigate("/");
-    }
-  }
 
   // Login
   async function submitHandler(e: React.FormEvent) {
@@ -60,8 +63,6 @@ function Account() {
     const accountObject = {
       username: `${usernameRef?.current?.value}`,
       password: `${passwordRef?.current?.value}`,
-      firstName: `${firstNameRef?.current?.value}`,
-      lastName: `${lastNameRef?.current?.value}`,
     }
     mutate(accountObject)
   }
@@ -70,7 +71,7 @@ function Account() {
     <>
       <ThemeProvider theme={Theme}>
         <Container maxWidth="sm" sx={{ textAlign: "center" }}>
-          <Typography variant="h3" gutterBottom>
+          <Typography variant="h1" align="center" sx={{ mt: 2 }} gutterBottom>
             MTG Collection App
           </Typography>
           <form onSubmit={submitHandler}>
@@ -101,32 +102,13 @@ function Account() {
                 sx={{ width: "100%" }}
                 inputRef={passwordRef}
               />
-              <TextField
-                required
-                variant="outlined"
-                margin="normal"
-                label="First Name"
-                id="firstname"
-                type="text"
-                sx={{ width: "100%" }}
-                inputRef={firstNameRef}
-              />
-              <TextField
-                required
-                variant="outlined"
-                margin="normal"
-                label="Last Name"
-                id="lastname"
-                type="text"
-                sx={{ width: "100%" }}
-                inputRef={lastNameRef}
-              />
               <Button
                 variant="contained"
                 type="submit"
                 sx={{
                   display: "flex",
                   margin: "auto",
+                  marginTop: 2
                 }}
               >
                 Create Account

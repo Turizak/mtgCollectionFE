@@ -1,17 +1,8 @@
-import { useState } from 'react';
-import { useRouteLoaderData, useLoaderData } from 'react-router-dom';
-import { useQuery, useMutation, QueryClientProviderProps } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Header from './Header';
 import Footer from './Footer';
 import CollectionCards from './CollectionCards';
 import {
-  IconButton,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
   Table,
   TableBody,
   TableCell,
@@ -20,7 +11,6 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-import { Edit, Delete, Cancel, Check } from '@mui/icons-material/';
 
 // MUI Custom Theme
 declare module '@mui/material/styles' {
@@ -49,46 +39,58 @@ interface AccountCards {
 }
 
 function Collection() {
-
   const baseURL = import.meta.env.VITE_APIURL;
-  const token = useRouteLoaderData('root');
+  const token = localStorage.token;
+
+  async function getAccountCards() {
+    try {
+      const response = await fetch(`${baseURL}/api/v1/account/cards`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`There was a problem: ${response.status}`);
+      }
+      const commits = await response.json();
+      return commits;
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  }
+
+  async function deleteCard(row: any) {
+    try {
+      const response = await fetch(
+        `${baseURL}/api/v1/account/cards/${row.scry_id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`There was a problem: ${response.status}`);
+      }
+      const commits = await response.json();
+      alert(commits?.result);
+      refetch();
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  }
 
   const { isLoading, isError, data, error, refetch } = useQuery({
     queryKey: ['card'],
     queryFn: getAccountCards,
   });
+  if (isLoading) return <span>Loading...</span>
+  if (isError) return <span>Error: {error.message}</span>
 
-  const { mutate } = useMutation({
-    mutationFn: deleteCard
-  })
-
-  async function getAccountCards() {
-    const response = await fetch(`${baseURL}/api/v1/account/cards`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-type': 'application/json',
-      },
-    });
-    const commits = await response.json();
-    return commits;
-  }
-
-  async function deleteCard(row: any) {
-    const response = await fetch(
-      `${baseURL}/api/v1/account/cards/${row.scry_id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    const commits = await response.json();
-    alert(commits?.result);
-    refetch();
-  }
 
   return (
     <>
@@ -96,7 +98,7 @@ function Collection() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
-            <TableRow color='secondary'>
+            <TableRow color="secondary">
               <TableCell sx={{ fontWeight: 'bold' }}>Card</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Price</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Qty</TableCell>
@@ -104,28 +106,26 @@ function Collection() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data ? (
+            {/* {data ? (
               data.map((row: any) => (
-                <CollectionCards row={row} deleteCard={deleteCard}/>
+                <CollectionCards row={row} deleteCard={deleteCard} />
               ))
             ) : isLoading ? (
               <TableRow>
-                <TableCell>
-                  Loading...
-                </TableCell>
+                <TableCell>Loading...</TableCell>
               </TableRow>
             ) : isError ? (
               <TableRow>
-                <TableCell>
-                {`Error: ${error.message}`}
-                </TableCell>
-                </TableRow>
+                <TableCell>{`Error: ${error.message}`}</TableCell>
+              </TableRow>
             ) : (
               <TableRow>
-                <TableCell>
-                </TableCell>
+                <TableCell></TableCell>
               </TableRow>
-            )}
+            )} */}
+            {data && data.map((row: any) => (
+                <CollectionCards row={row} deleteCard={deleteCard}/>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

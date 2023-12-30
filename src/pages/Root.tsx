@@ -5,7 +5,7 @@ import { Outlet, useLoaderData, useNavigate } from 'react-router-dom'
 import { getTokenDuration } from '../utils/auth';
 
 function RootLayout() {
-  const token = useLoaderData
+  const token = useLoaderData()
   const navigate = useNavigate()
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import ListIcon from "@mui/icons-material/List";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme from "./material ui/Theme";
+import { getTokenDuration } from "../utils/auth";
 
 declare module "@mui/material/styles" {
   interface Theme {
