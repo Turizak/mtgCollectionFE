@@ -5,8 +5,6 @@ import { LoginPage } from "../pages/loginPage";
 type CreateFormOptions = {
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
 };
 
 type LoginFormOptions = {
@@ -22,8 +20,6 @@ test.describe("Create Account Tests", () => {
     const createFormData: CreateFormOptions = {
       username: "testuser",
       password: "testpass",
-      firstName: "test",
-      lastName: "user",
     };
 
     const loginFormData: LoginFormOptions = {

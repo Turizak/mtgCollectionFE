@@ -1,4 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthProvider';
 import Header from './Header';
 import Footer from './Footer';
 import CollectionCards from './CollectionCards';
@@ -40,7 +42,8 @@ interface AccountCards {
 
 function Collection() {
   const baseURL = import.meta.env.VITE_APIURL;
-  const token = localStorage.token;
+  const { auth } = useContext(AuthContext)
+  const token = auth.accessToken
 
   async function getAccountCards() {
     try {
@@ -51,8 +54,11 @@ function Collection() {
           'Content-type': 'application/json',
         },
       });
-      if (!response.ok) {
-        throw new Error(`There was a problem: ${response.status}`);
+      if (response.status === 406) {() => fetch(`${baseURL}/api/v1/account/refresh`)
+       return
+      }
+      if (response.status === 401) {
+        throw new Error(`${response.status}`)
       }
       const commits = await response.json();
       return commits;
@@ -84,12 +90,10 @@ function Collection() {
     }
   }
 
-  const { isLoading, isError, data, error, refetch } = useQuery({
+  const { isLoading, isFetching, isError, data, error, refetch } = useQuery({
     queryKey: ['card'],
     queryFn: getAccountCards,
   });
-  if (isLoading) return <span>Loading...</span>
-  if (isError) return <span>Error: {error.message}</span>
 
 
   return (
@@ -106,26 +110,23 @@ function Collection() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* {data ? (
+            {data ? (
               data.map((row: any) => (
                 <CollectionCards row={row} deleteCard={deleteCard} />
               ))
-            ) : isLoading ? (
+            ) : isLoading || isFetching ? (
               <TableRow>
                 <TableCell>Loading...</TableCell>
               </TableRow>
             ) : isError ? (
               <TableRow>
-                <TableCell>{`Error: ${error.message}`}</TableCell>
+                <TableCell>Error: {error.message}</TableCell>
               </TableRow>
             ) : (
               <TableRow>
                 <TableCell></TableCell>
               </TableRow>
-            )} */}
-            {data && data.map((row: any) => (
-                <CollectionCards row={row} deleteCard={deleteCard}/>
-              ))}
+            )}
           </TableBody>
         </Table>
       </TableContainer>

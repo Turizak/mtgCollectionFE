@@ -9,16 +9,12 @@ export class CreateAccountPage {
   readonly btnCreateAccount: Locator;
   readonly inputUsername: Locator;
   readonly inputPassword: Locator;
-  readonly inputFirstName: Locator;
-  readonly inputLastName: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.btnCreateAccount = page.getByText("Create Account");
     this.inputUsername = page.locator("#username");
     this.inputPassword = page.locator("#password");
-    this.inputFirstName = page.locator("#firstname");
-    this.inputLastName = page.locator("#lastname");
   }
 
   /**
@@ -42,14 +38,10 @@ export class CreateAccountPage {
   async createAccountUI(options: {
     username: string;
     password: string;
-    firstName: string;
-    lastName: string;
   }) {
     // input fields
     await this.inputUsername.fill(options.username);
     await this.inputPassword.fill(options.password);
-    await this.inputFirstName.fill(options.firstName);
-    await this.inputLastName.fill(options.lastName);
     await this.btnCreateAccount.click();
   }
 
