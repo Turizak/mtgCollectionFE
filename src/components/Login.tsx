@@ -46,10 +46,10 @@ const { setAuth } = useContext(AuthContext)
       throw new Error(`${response.status}`)
     }
     const commits = await response.json();
+    const accessToken = commits.token
+    const refreshToken = commits.refreshToken
     localStorage.setItem('accessToken', commits.token);
     localStorage.setItem('refreshToken', commits.refreshToken);
-    const accessToken = localStorage.accessToken
-    const refreshToken = localStorage.refreshToken
     setAuth({ accessToken, refreshToken })
     navigate('/')
     } 

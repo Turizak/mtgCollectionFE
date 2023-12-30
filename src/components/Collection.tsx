@@ -54,10 +54,7 @@ function Collection() {
           'Content-type': 'application/json',
         },
       });
-      if (response.status === 406) {() => fetch(`${baseURL}/api/v1/account/refresh`)
-       return
-      }
-      if (response.status === 401) {
+      if (!response.ok) {
         throw new Error(`${response.status}`)
       }
       const commits = await response.json();

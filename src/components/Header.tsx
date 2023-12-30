@@ -41,7 +41,7 @@ function Header() {
           <Toolbar>
             <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
               <Link
-                to="/collection"
+                to="/"
                 style={{ textDecoration: 'none', color: 'white' }}
               >
                 MTG Collection App
