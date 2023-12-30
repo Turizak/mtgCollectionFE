@@ -2,7 +2,7 @@ import useAuth from './useAuth';
 import { useMutation } from '@tanstack/react-query';
 
 const useRefresh = () => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const baseURL = import.meta.env.VITE_APIURL;
   const url = `${baseURL}/api/v1/account/refresh`;
 
@@ -15,7 +15,7 @@ const useRefresh = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          refreshToken: localStorage.getItem('refreshToken'),
+          refreshToken: auth.refreshToken,
         }),
       });
       if (!response.ok) {
@@ -26,7 +26,7 @@ const useRefresh = () => {
       const refreshToken = commits.refreshToken
       setAuth({ accessToken, refreshToken })
       console.log('New Access Token Granted')
-      return accessToken;
+      return { accessToken, refreshToken }
     } catch (error) {
       console.error(error);
     }
