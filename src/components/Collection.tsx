@@ -12,7 +12,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography
+  Typography,
 } from '@mui/material';
 
 // TS Interface for data from GET request
@@ -27,44 +27,43 @@ interface AccountCards {
 }
 
 function Collection() {
-  const [message, setMessage] = useState<string>('')
+  const [message, setMessage] = useState<string>('');
   const baseURL = import.meta.env.VITE_APIURL;
-  const { auth } = useContext(AuthContext)
-  const token = auth.accessToken
+  const token = localStorage.getItem('accessToken');
 
   async function getAccountCards() {
-      const response = await fetch(`${baseURL}/api/v1/account/cards`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`${error?.message}`)
-      }
-      const commits = await response.json();
-      return commits;
-}
+    const response = await fetch(`${baseURL}/api/v1/account/cards`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`${error?.message}`);
+    }
+    const commits = await response.json();
+    return commits;
+  }
 
   async function deleteCard(row: any) {
-      const response = await fetch(
-        `${baseURL}/api/v1/account/cards/${row.scry_id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error(`There was a problem: ${response.status}`);
+    const response = await fetch(
+      `${baseURL}/api/v1/account/cards/${row.scry_id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       }
-      const commits = await response.json();
-      manageMessage(commits?.result);
-      refetch();
+    );
+    if (!response.ok) {
+      throw new Error(`There was a problem: ${response.status}`);
     }
+    const commits = await response.json();
+    manageMessage(commits?.result);
+    refetch();
+  }
 
   const { isLoading, isFetching, isError, data, error, refetch } = useQuery({
     queryKey: ['card'],
@@ -72,18 +71,20 @@ function Collection() {
   });
 
   function manageMessage(content) {
-    setMessage(content)
-    setTimeout(()=> {
-      setMessage('')
-    }, 3000)
+    setMessage(content);
+    setTimeout(() => {
+      setMessage('');
+    }, 3000);
   }
 
   return (
     <>
       <Header />
-      <Typography sx={{display: 'flex', justifyContent: 'center', padding: .5}}>
-            <span>{message}</span>
-          </Typography>
+      <Typography
+        sx={{ display: 'flex', justifyContent: 'center', padding: 0.5 }}
+      >
+        <span>{message}</span>
+      </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
@@ -97,7 +98,11 @@ function Collection() {
           <TableBody>
             {data ? (
               data.map((row: any) => (
-                <CollectionCards row={row} deleteCard={deleteCard} />
+                <CollectionCards
+                  row={row}
+                  deleteCard={deleteCard}
+                  refetch={refetch}
+                />
               ))
             ) : isLoading || isFetching ? (
               <TableRow>
