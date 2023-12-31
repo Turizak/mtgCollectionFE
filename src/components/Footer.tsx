@@ -1,6 +1,6 @@
-import { Container, Box, Typography } from "@mui/material"
-import GitHubIcon from "@mui/icons-material/GitHub";
-import IconButton from "@mui/material/IconButton";
+import { Container, Box, Typography} from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import IconButton from '@mui/material/IconButton';
 
 function Footer() {
   return (
@@ -9,16 +9,18 @@ function Footer() {
         sx={{
           width: "100%",
           position: "fixed",
-          bottom: "0",
+          bottom: 0,
           backgroundColor: "primary.main",
-          zIndex: "1000"
+          zIndex: "1000",
+          paddingBottom: 1,
+          marginLeft: -1,
+
         }}
         component="footer"
       >
         <Container maxWidth="lg">
           <Box
             sx={{
-              flexGrow: 1,
               justifyContent: "center",
               display: "flex",
             }}
@@ -34,10 +36,8 @@ function Footer() {
 
           <Box
             sx={{
-              flexGrow: 1,
               justifyContent: "center",
-              display: "flex",
-              mb: 2,
+              display: "flex"
             }}
           >
             <Typography variant="subtitle2" sx={{ color: "black" }}>
@@ -67,8 +67,8 @@ function Footer() {
           </Box>
         </Container>
       </Box>
-  </>
-  )
+    </>
+  );
 }
 
 export default Footer;

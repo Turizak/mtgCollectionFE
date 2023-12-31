@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import Footer from './components/Footer';
 import RequireAuth from './pages/RequireAuth';
 import Missing from './pages/Missing';
+import Footer from './components/Footer';
 import Collection from './components/Collection';
 import Search from './components/Search';
 import Login from './components/Login';
@@ -29,9 +29,9 @@ function App() {
             {/* Catch All*/}
             <Route path="*" element={<Missing />} />
           </Routes>
-          <Footer />
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </BrowserRouter>
+      <Footer />
     </QueryClientProvider>
   );
 }

@@ -11,6 +11,7 @@ type LoginCredentials = {
 };
 
 function Login() {
+  const [message, setMessage] = useState<string>('')
   const [disabled, setDisabled] = useState<boolean>(false);
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -51,9 +52,16 @@ const { auth, setAuth } = useContext(AuthContext)
     } 
     catch (error) {
       console.error(error)
-      alert(`${error}`)
+      manageMessage(`${error}`)
       setDisabled(false)
     }
+  }
+
+  function manageMessage(content) {
+    setMessage(content)
+    setTimeout(()=> {
+      setMessage('')
+    }, 3000)
   }
 
   function handleClick() {
@@ -67,9 +75,12 @@ const { auth, setAuth } = useContext(AuthContext)
 
   return (
     <>
-        <Container maxWidth="md">
-          <Typography variant="h3" align="center" sx={{ mt: 2 }}>
+        <Container maxWidth="md" sx={{height: "88dvh"}}>
+          <Typography variant="h2" align="center" sx={{ mt: 2 }}>
             MTG Collection App
+          </Typography>
+          <Typography variant="h4" sx={{display: 'flex', justifyContent: 'center', padding: 2}}>
+            <span>{message}</span>
           </Typography>
           <form>
             <Box

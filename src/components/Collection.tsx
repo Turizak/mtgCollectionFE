@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import useRefresh from '../hooks/useRefresh';
 import AuthContext from '../context/AuthProvider';
 import Header from './Header';
-import Footer from './Footer';
 import CollectionCards from './CollectionCards';
 import {
   Table,
@@ -13,6 +12,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Typography
 } from '@mui/material';
 
 // TS Interface for data from GET request
@@ -27,6 +27,7 @@ interface AccountCards {
 }
 
 function Collection() {
+  const [message, setMessage] = useState<string>('')
   const baseURL = import.meta.env.VITE_APIURL;
   const { auth } = useContext(AuthContext)
   const token = auth.accessToken
@@ -71,7 +72,7 @@ function Collection() {
         throw new Error(`There was a problem: ${response.status}`);
       }
       const commits = await response.json();
-      alert(commits?.result);
+      manageMessage(commits?.result);
       refetch();
     } catch (error) {
       console.error('Error fetching data: ', error);
@@ -83,14 +84,23 @@ function Collection() {
     queryFn: getAccountCards,
   });
 
+  function manageMessage(content) {
+    setMessage(content)
+    setTimeout(()=> {
+      setMessage('')
+    }, 3000)
+  }
 
   return (
     <>
       <Header />
+      <Typography sx={{display: 'flex', justifyContent: 'center', padding: .5}}>
+            <span>{message}</span>
+          </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
-            <TableRow color="secondary">
+            <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }}>Card</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Price</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Qty</TableCell>
@@ -118,7 +128,6 @@ function Collection() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Footer />
     </>
   );
 }
