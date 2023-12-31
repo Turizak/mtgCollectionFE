@@ -74,7 +74,10 @@ function Collection() {
       const commits = await response.json();
       manageMessage(commits?.result);
       refetch();
-    } catch (error) {
+    } catch (error:any) {
+      if (error.message === 406) {
+        refresh()
+      }
       console.error('Error fetching data: ', error);
     }
   }

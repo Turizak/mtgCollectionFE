@@ -13,6 +13,6 @@ export class CollectionPage {
    * @method
    */
   async goto() {
-    await this.page.goto("/collection");
+    await this.page.goto("/");
   }
 }

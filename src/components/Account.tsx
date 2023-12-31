@@ -29,7 +29,7 @@ function Account() {
         throw new Error(`${response.status}`)
       }
       alert("Account created!");
-      navigate("/");
+      navigate("/login");
     }
     catch (error) {
       console.error(error)
