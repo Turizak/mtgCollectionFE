@@ -2,79 +2,80 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Header from './Header';
 import Results from './Results';
+import LogoutModal from './LogoutModal';
 import { TextField, Container, Button } from '@mui/material/';
 import SearchIcon from '@mui/icons-material/Search';
 
 function Search() {
   const [inputValue, setInputValue] = useState<string>('');
-  const [card, setCard] = useState<any>([]);
-
   const scryfallURL = import.meta.env.VITE_SFURL;
   const fetchURL = `${scryfallURL}/cards/search?unique=prints&q=${inputValue}`;
 
-  async function getPeople() {
+  async function getCards() {
     const response = await fetch(fetchURL);
     if (!response.ok) {
-      throw new Error('There was a problem');
+      throw new Error(`${error?.message}`)
     }
     const data = await response.json();
     const filteredData = data.data
-      .filter((card: any) => card.prices.usd != null)
-      .filter((card: any) => card.image_uris != null);
-    setCard(filteredData.slice(0, 40));
-    return data;
+    .filter((card: any) => card.prices.usd != null)
+    .filter((card: any) => card.image_uris != null)
+    const dataArray = Array.from(Object.values(filteredData))
+    const slicedData = dataArray.slice(0,48)
+    return slicedData
   }
 
   const { isFetching, isError, data, error, refetch } = useQuery({
     queryKey: ['results'],
-    queryFn: getPeople,
+    queryFn: getCards,
     enabled: false,
   });
 
   function handleClick(e) {
     e.preventDefault();
-    refetch()
+    refetch();
   }
 
   return (
     <>
       <Header />
-        <Container maxWidth="lg">
-          <form>
-            <Container
-              maxWidth="lg"
-              sx={{ display: 'flex', justifyContent: 'center', margin: 2 }}
+      <Container maxWidth="lg">
+        <form>
+          <Container
+            maxWidth="lg"
+            sx={{ display: 'flex', justifyContent: 'center', margin: 2 }}
+          >
+            <TextField
+              variant="outlined"
+              label="Card"
+              id="card"
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              sx={{ marginLeft: 1 }}
+              type="submit"
+              onClick={handleClick}
             >
-              <TextField
-                variant="outlined"
-                label="Card"
-                id="card"
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
-              <Button
-                variant="contained"
-                sx={{ marginLeft: 1 }}
-                type="submit"
-                onClick={handleClick}
-              >
-                <SearchIcon />
-              </Button>
-            </Container>
-          </form>
-          <Container maxWidth="lg" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            {isFetching ? (
+              <SearchIcon />
+            </Button>
+          </Container>
+        </form>
+        <Container maxWidth="lg" sx={{ display: 'flex', flexWrap: 'wrap' }}>
+          {isFetching ? (
               <span>Loading...</span>
             ) : isError ? (
               <span>Error: {error.message}</span>
             ) : (
-              card &&
-              card.map((item, index) => <Results key={index} item={item} />)
+              data &&
+              data.map((item) => <Results item={item} />)
             )}
-          </Container>
         </Container>
-        <div style={{height: '100px'}}></div>
+      </Container>
+      <LogoutModal />
+      <div style={{ height: '100px' }}></div>
     </>
   );
 }

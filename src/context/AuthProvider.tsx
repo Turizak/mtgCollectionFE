@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState} from "react";
 
 const AuthContext = createContext<any>({})
 
@@ -7,6 +7,7 @@ export const AuthProvider = ({children}) => {
       accessToken: localStorage.getItem('accessToken'),
       refreshToken: localStorage.getItem('refreshToken')
     })
+
   return (
     <AuthContext.Provider value={{auth, setAuth}}>
         {children}

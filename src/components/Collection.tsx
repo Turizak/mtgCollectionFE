@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useContext, useState } from 'react';
-import useRefresh from '../hooks/useRefresh';
 import AuthContext from '../context/AuthProvider';
 import Header from './Header';
 import CollectionCards from './CollectionCards';
+import LogoutModal from './LogoutModal';
 import {
   Table,
   TableBody,
@@ -31,10 +31,8 @@ function Collection() {
   const baseURL = import.meta.env.VITE_APIURL;
   const { auth } = useContext(AuthContext)
   const token = auth.accessToken
-  const refresh = useRefresh()
 
   async function getAccountCards() {
-    try {
       const response = await fetch(`${baseURL}/api/v1/account/cards`, {
         method: 'GET',
         headers: {
@@ -43,21 +41,13 @@ function Collection() {
         },
       });
       if (!response.ok) {
-        throw new Error(`${response.status}`)
+        throw new Error(`${error?.message}`)
       }
       const commits = await response.json();
       return commits;
-    } catch (error: any) {
-      if (error.message.startsWith('406')) {
-      refresh()
-     } else {
-      console.error(error);
-    }
-  }
 }
 
   async function deleteCard(row: any) {
-    try {
       const response = await fetch(
         `${baseURL}/api/v1/account/cards/${row.scry_id}`,
         {
@@ -74,13 +64,7 @@ function Collection() {
       const commits = await response.json();
       manageMessage(commits?.result);
       refetch();
-    } catch (error:any) {
-      if (error.message === 406) {
-        refresh()
-      }
-      console.error('Error fetching data: ', error);
     }
-  }
 
   const { isLoading, isFetching, isError, data, error, refetch } = useQuery({
     queryKey: ['card'],
@@ -131,6 +115,7 @@ function Collection() {
           </TableBody>
         </Table>
       </TableContainer>
+      <LogoutModal />
     </>
   );
 }

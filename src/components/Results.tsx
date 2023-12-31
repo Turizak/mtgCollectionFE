@@ -1,15 +1,13 @@
 import { useState, useContext } from 'react';
-import useRefresh from '../hooks/useRefresh';
 import AuthContext from '../context/AuthProvider';
 import { Paper, Typography, Container, TextField, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useMutation } from '@tanstack/react-query';
 
-function Results({ key, item }) {
+function Results({ item }) {
   const [quantity, setQuantity] = useState<number>(1);
   const [added, setAdded] = useState<boolean>(false);
   const { auth } = useContext(AuthContext);
-  const refresh = useRefresh();
 
   const baseURL = import.meta.env.VITE_APIURL;
   const token = auth.accessToken;
@@ -19,7 +17,6 @@ function Results({ key, item }) {
   });
 
   async function addCard(body: any) {
-    try {
       const response = await fetch(`${baseURL}/api/v1/account/cards`, {
         method: 'POST',
         headers: {
@@ -34,13 +31,6 @@ function Results({ key, item }) {
       }
       const commits = await response.json();
       commits?.status === 200 || 201 ? setAdded(true) : setAdded(false);
-    } catch (error: any) {
-      if (error.message.startsWith('406')) {
-        refresh();
-      } else {
-        console.log(error);
-      }
-    }
   }
 
   async function clickHandler() {
@@ -67,7 +57,7 @@ function Results({ key, item }) {
         {item.length === 0 ? (
           <span>No Results</span>
         ) : (
-          <div key={key}>
+          <div key={item.id}>
             <Paper
               sx={{
                 display: 'flex',
