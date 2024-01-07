@@ -68,6 +68,7 @@ function CollectionCards({ row, deleteCard, refetch }) {
       quantity: newQuantity,
     };
     mutate(cardObject);
+    setCardModalOpen(false)
   }
 
   return (
