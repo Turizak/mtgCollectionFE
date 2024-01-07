@@ -1,7 +1,8 @@
-//@ts-nocheck
 import { useState } from 'react';
 import {
   IconButton,
+  Container,
+  CardMedia,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,6 +11,7 @@ import {
   TextField,
   TableCell,
   TableRow,
+  Typography,
 } from '@mui/material';
 import { Edit, Delete, Cancel, Check } from '@mui/icons-material/';
 import { useMutation } from '@tanstack/react-query';
@@ -25,48 +27,34 @@ interface AccountCards {
   image_uris: string;
 }
 
-function CollectionCards({ row, deleteCard }) {
-  const [cardModalOpen, setCardModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+function CollectionCards({ row, deleteCard, refetch }) {
+  const [cardModalOpen, setCardModalOpen] = useState<boolean>(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [newQuantity, setNewQuantity] = useState<number>(0);
+  const [message, setMessage] = useState<string>('');
 
   const baseURL = import.meta.env.VITE_APIURL;
   const url = `${baseURL}/api/v1/account/cards/${row.scry_id}`;
-  const token = localStorage.getItem('token');
-
-  function cardModalHandleOpen() {
-    setCardModalOpen(true);
-  }
-
-  function cardModalHandleClose() {
-    setCardModalOpen(false);
-  }
-
-  function deleteModalHandleOpen() {
-    setDeleteModalOpen(true);
-  }
-
-  function deleteModalHandleClose() {
-    setDeleteModalOpen(false);
-  }
+  const token = localStorage.getItem('accessToken');
 
   async function editQuantity(body) {
     try {
       const response = await fetch(url, {
         method: 'PATCH',
         headers: {
-          Accept: "*/*",
+          Accept: '*/*',
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
-          body: JSON.stringify(body),
         },
+        body: JSON.stringify(body),
       });
       if (!response.ok) {
-        throw new Error(`There was an error: ${rseponse.status}`);
+        throw new Error(`There was an error: ${response.status}`);
       }
-      const data = await response.json();
-      return data;
+      const commits = await response.json();
+      refetch();
     } catch (error) {
-      console.error('Error patching data', error);
+      console.error(error);
     }
   }
 
@@ -76,11 +64,10 @@ function CollectionCards({ row, deleteCard }) {
 
   async function editCard(row: any) {
     const cardObject = {
-      id: row.scryfall_id,
-      quantity: row.quantity,
+      scry_id: row.scryfall_id,
+      quantity: newQuantity,
     };
     mutate(cardObject);
-    
   }
 
   return (
@@ -95,42 +82,57 @@ function CollectionCards({ row, deleteCard }) {
         <TableCell>{'$' + row.price}</TableCell>
         <TableCell>{row.quantity}</TableCell>
         <TableCell>
-          <IconButton onClick={cardModalHandleOpen}>
+          <IconButton onClick={() => setCardModalOpen(true)}>
             <Edit fontSize="medium" />
           </IconButton>
-          <Dialog open={cardModalOpen} onClose={cardModalHandleClose}>
+          <Dialog open={cardModalOpen}>
             <DialogTitle id="alert-dialog-title" align="center">
               {'Card Details'}
             </DialogTitle>
-            <DialogContent
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-                flexDirection: 'column',
-              }}
-            >
-              <img src={row.image_uris.small} alt="card picture" width="100%" />
-              <TextField
-                type="number"
-                label="quantity"
-                defaultValue={row.quantity}
-                sx={{ display: 'flex', marginTop: 2 }}
-              />
+            <DialogContent>
+              <Container sx={{ display: 'flex', justifyContent: 'center' }}>
+                <CardMedia
+                  component="img"
+                  alt="card picture"
+                  image={row.image_uris.small}
+                  sx={{ width: 150, marginBottom: 3 }}
+                />
+                <Typography
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    padding: 0.5,
+                  }}
+                >
+                  <span>{message}</span>
+                </Typography>
+              </Container>
+              <Container sx={{ display: 'flex', justifyContent: 'center' }}>
+                <TextField
+                  type="number"
+                  label="quantity"
+                  variant="outlined"
+                  defaultValue={row.quantity}
+                  onChange={(e) => setNewQuantity(Number(e.target.value))}
+                  sx={{ width: '4.5rem' }}
+                />
+                <DialogActions
+                  sx={{ display: 'flex', justifyContent: 'center' }}
+                >
+                  <IconButton onClick={editCard}>
+                    <Check />
+                  </IconButton>
+                  <IconButton onClick={() => setCardModalOpen(false)} autoFocus>
+                    <Cancel />
+                  </IconButton>
+                </DialogActions>
+              </Container>
             </DialogContent>
-            <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-              <IconButton onClick={editCard}>
-                <Check />
-              </IconButton>
-              <IconButton onClick={close} autoFocus>
-                <Cancel />
-              </IconButton>
-            </DialogActions>
           </Dialog>
-          <IconButton onClick={deleteModalHandleOpen}>
+          <IconButton onClick={() => setDeleteModalOpen(true)}>
             <Delete fontSize="medium" />
           </IconButton>
-          <Dialog open={deleteModalOpen} onClose={deleteModalHandleClose}>
+          <Dialog open={deleteModalOpen}>
             <DialogTitle id="alert-dialog-title">{'Delete Entry'}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
@@ -138,7 +140,7 @@ function CollectionCards({ row, deleteCard }) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <IconButton onClick={deleteModalHandleClose} autoFocus>
+              <IconButton onClick={() => setDeleteModalOpen(false)} autoFocus>
                 <Cancel />
               </IconButton>
               <IconButton onClick={() => deleteCard(row)}>
