@@ -27,9 +27,8 @@ interface AccountCards {
   image_uris: string;
 }
 
-function CollectionCards({ row, deleteCard, refetch }) {
+function CollectionCards({ row, deleteCard, deleteModalOpen, handleDeleteModal, refetch }) {
   const [cardModalOpen, setCardModalOpen] = useState<boolean>(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [newQuantity, setNewQuantity] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
 
@@ -111,7 +110,7 @@ function CollectionCards({ row, deleteCard, refetch }) {
               <Container sx={{ display: 'flex', justifyContent: 'center' }}>
                 <TextField
                   type="number"
-                  label="quantity"
+                  label="Quantity"
                   variant="outlined"
                   defaultValue={row.quantity}
                   onChange={(e) => setNewQuantity(Number(e.target.value))}
@@ -130,7 +129,7 @@ function CollectionCards({ row, deleteCard, refetch }) {
               </Container>
             </DialogContent>
           </Dialog>
-          <IconButton onClick={() => setDeleteModalOpen(true)}>
+          <IconButton onClick={() => handleDeleteModal(true)}>
             <Delete fontSize="medium" />
           </IconButton>
           <Dialog open={deleteModalOpen}>
@@ -141,7 +140,7 @@ function CollectionCards({ row, deleteCard, refetch }) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <IconButton onClick={() => setDeleteModalOpen(false)} autoFocus>
+              <IconButton onClick={() => handleDeleteModal(false)} autoFocus>
                 <Cancel />
               </IconButton>
               <IconButton onClick={() => deleteCard(row)}>

@@ -28,6 +28,8 @@ interface AccountCards {
 
 function Collection() {
   const [message, setMessage] = useState<string>('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+
   const baseURL = import.meta.env.VITE_APIURL;
   const token = localStorage.getItem('accessToken');
 
@@ -61,6 +63,7 @@ function Collection() {
       throw new Error(`There was a problem: ${response.status}`);
     }
     const commits = await response.json();
+    setDeleteModalOpen(false)
     manageMessage(commits?.result);
     refetch();
   }
@@ -75,6 +78,10 @@ function Collection() {
     setTimeout(() => {
       setMessage('');
     }, 3000);
+  }
+
+  function handleDeleteModal(bool: boolean) {
+    setDeleteModalOpen(bool)
   }
 
   return (
@@ -100,7 +107,9 @@ function Collection() {
               data.map((row: any) => (
                 <CollectionCards
                   row={row}
+                  deleteModalOpen={deleteModalOpen}
                   deleteCard={deleteCard}
+                  handleDeleteModal={handleDeleteModal}
                   refetch={refetch}
                 />
               ))
