@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Edit, Delete, Cancel, Check } from '@mui/icons-material/';
-import { useMutation } from '@tanstack/react-query';
+import useQuantity from '../hooks/useQuantity';
 
 // TS Interface for data from GET request
 interface AccountCards {
@@ -27,47 +27,35 @@ interface AccountCards {
   image_uris: string;
 }
 
-function CollectionCards({ row, deleteCard, deleteModalOpen, handleDeleteModal, refetch }) {
+function CollectionCards({
+  row,
+  deleteCard,
+  deleteModalOpen,
+  handleDeleteModal,
+  refetch,
+}) {
   const [cardModalOpen, setCardModalOpen] = useState<boolean>(false);
+
   const [newQuantity, setNewQuantity] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
-
-  const baseURL = import.meta.env.VITE_APIURL;
-  const url = `${baseURL}/api/v1/account/cards/${row.scry_id}`;
-  const token = localStorage.getItem('accessToken');
-
-  async function editQuantity(body) {
-    try {
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers: {
-          Accept: '*/*',
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
-      if (!response.ok) {
-        throw new Error(`There was an error: ${response.status}`);
-      }
-      const commits = await response.json();
-      refetch();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const { mutate } = useMutation({
-    mutationFn: editQuantity,
+  const [card, setCard] = useState<any>({
+    scry_id: row.scry_id,
+    quantity: 0,
   });
 
+  const { mutate } = useQuantity(card, row.scry_id);
+
   async function editCard(row: any) {
-    const cardObject = {
-      scry_id: row.scryfall_id,
+    setCard({
+      ...card,
+      scry_id: row.scry_id,
       quantity: newQuantity,
-    };
-    mutate(cardObject);
-    setCardModalOpen(false)
+    });
+    mutate(card);
+    setCardModalOpen(false);
+    setTimeout(() => {
+      refetch();
+    }, 1500);
   }
 
   return (
