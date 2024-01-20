@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
+import useScry from '../hooks/useScry';
 import Header from './Header';
 import Results from './Results';
 import LogoutModal from './LogoutModal';
@@ -8,31 +9,11 @@ import SearchIcon from '@mui/icons-material/Search';
 
 function Search() {
   const [inputValue, setInputValue] = useState<string>('');
-  const scryfallURL = import.meta.env.VITE_SFURL;
-  const fetchURL = `${scryfallURL}/cards/search?unique=prints&q=${inputValue}`;
+  const {data, error, isError, isFetching, refetch } = useScry(inputValue)
 
-  async function getCards() {
-    const response = await fetch(fetchURL);
-    if (!response.ok) {
-      throw new Error(`${error?.message}`)
-    }
-    const data = await response.json();
-    const filteredData = data.data
-    .filter((card: any) => card.prices.usd != null)
-    .filter((card: any) => card.image_uris != null)
-    const dataArray = Array.from(Object.values(filteredData))
-    const slicedData = dataArray.slice(0,48)
-    return slicedData
-  }
-
-  const { isFetching, isError, data, error, refetch } = useQuery({
-    queryKey: ['results'],
-    queryFn: getCards,
-    enabled: false,
-  });
-
-  function handleClick(e) {
+  function handleClick(e: any) {
     e.preventDefault();
+    useScry
     refetch();
   }
 
@@ -67,7 +48,7 @@ function Search() {
           {isFetching ? (
               <span>Loading...</span>
             ) : isError ? (
-              <span>Error: {error.message}</span>
+              <span>Error: {error?.message}</span>
             ) : (
               data &&
               data.map((item) => <Results item={item} />)
