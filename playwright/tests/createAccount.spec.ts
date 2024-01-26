@@ -5,11 +5,15 @@ import { LoginPage } from "../pages/loginPage";
 type CreateFormOptions = {
   username: string;
   password: string;
+  firstName: string;
+  lastName: string;
 };
 
 type LoginFormOptions = {
   username: string;
   password: string;
+  firstName: string;
+  lastName: string;
 };
 
 test.describe("Create Account Tests", () => {
@@ -20,11 +24,15 @@ test.describe("Create Account Tests", () => {
     const createFormData: CreateFormOptions = {
       username: "testuser",
       password: "testpass",
+      firstName: "test",
+      lastName: "test"
     };
 
     const loginFormData: LoginFormOptions = {
       username: createFormData.username,
       password: createFormData.password,
+      firstName: createFormData.firstName,
+      lastName: createFormData.lastName
     };
 
     await test.step("Navigate to the page", async () => {
