@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useContext, useState } from 'react';
-import AuthContext from '../context/AuthProvider';
+import { useState } from 'react';
 import Header from './Header';
 import CollectionCards from './CollectionCards';
 import LogoutModal from './LogoutModal';
@@ -29,7 +28,6 @@ interface AccountCards {
 function Collection() {
   const [message, setMessage] = useState<string>('');
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-
   const baseURL = import.meta.env.VITE_APIURL;
   const token = localStorage.getItem('accessToken');
 
@@ -63,8 +61,8 @@ function Collection() {
       throw new Error(`There was a problem: ${response.status}`);
     }
     const commits = await response.json();
-    setDeleteModalOpen(false)
-    manageMessage(commits?.result);
+    setDeleteModalOpen(false);
+    manageMessage(commits?.results)
     refetch();
   }
 
@@ -81,7 +79,7 @@ function Collection() {
   }
 
   function handleDeleteModal(bool: boolean) {
-    setDeleteModalOpen(bool)
+    setDeleteModalOpen(bool);
   }
 
   return (
@@ -119,7 +117,7 @@ function Collection() {
               </TableRow>
             ) : isError ? (
               <TableRow>
-                <TableCell>Error: {error.message}</TableCell>
+                <TableCell>Error: {error?.message}</TableCell>
               </TableRow>
             ) : (
               <TableRow>
@@ -131,7 +129,7 @@ function Collection() {
       </TableContainer>
       <LogoutModal />
     </>
-  );
+  )
 }
 
 export default Collection;
