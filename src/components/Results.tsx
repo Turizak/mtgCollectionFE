@@ -17,7 +17,7 @@ function Results({ item }) {
   });
 
   async function addCard(body: any) {
-      const response = await fetch(`${baseURL}/api/v1/account/cards`, {
+      const response = await fetch(baseURL + '/api/v1/account/cards', {
         method: 'POST',
         headers: {
           Accept: '*/*',

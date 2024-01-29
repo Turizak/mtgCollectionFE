@@ -4,19 +4,31 @@ import { Box, TextField, Button, Container, Typography } from '@mui/material/';
 import { useMutation } from '@tanstack/react-query';
 
 function Account() {
+  {
+    /* Success or Error Message */
+  }
   const [message, setMessage] = useState('');
+
+  {
+    /* Form Refs */
+  }
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
-
-  // useNavigate hook from React Router
+  const emailRef = useRef<HTMLInputElement>(null);
+  {
+    /* useNavigate hook from React Router */
+  }
   const navigate = useNavigate();
 
-  // ENV Variables
+  {
+    /* ENV Variables */
+  }
   const baseURL = import.meta.env.VITE_APIURL;
-  const url = `${baseURL}/api/v1/account/create`;
+  const url = baseURL + '/api/v1/account/create';
 
+  {
+    /* Create Account POST */
+  }
   async function createAccount(body: any) {
     const response = await fetch(url, {
       method: 'POST',
@@ -36,6 +48,9 @@ function Account() {
     mutationFn: createAccount,
   });
 
+  {
+    /* Message Handler */
+  }
   function manageMessage(content) {
     setMessage(content);
     setTimeout(() => {
@@ -43,14 +58,25 @@ function Account() {
     }, 3000);
   }
 
-  // Login
+{/* Email Regex */}
+function validateEmail(email: string) {
+  const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return emailRegex.test(email)
+}
+
+
+  {
+    /* Form Submit */
+  }
   async function submitHandler(e: React.FormEvent) {
     e.preventDefault();
+   if (!validateEmail(emailRef?.current?.value as string)) {
+    manageMessage('Please enter a valid email address')
+    }
     const accountObject = {
       username: `${usernameRef?.current?.value}`,
       password: `${passwordRef?.current?.value}`,
-      firstName: `${firstNameRef?.current?.value}`,
-      lastName: `${lastNameRef?.current?.value}`,
+      email: `${emailRef?.current?.value}`,
     };
     mutate(accountObject);
   }
@@ -61,11 +87,13 @@ function Account() {
         <Typography variant="h2" align="center" sx={{ mt: 2 }} gutterBottom>
           MTG Collection App
         </Typography>
+        {/* Message */}
         <Typography
           sx={{ display: 'flex', justifyContent: 'center', padding: 0.5 }}
         >
           <span>{message}</span>
         </Typography>
+        {/* Form */}
         <form onSubmit={submitHandler}>
           <Box
             sx={{
@@ -81,6 +109,7 @@ function Account() {
               label="Username"
               id="username"
               type="text"
+              inputProps={{ maxLength: 15 }}
               sx={{ width: '100%' }}
               inputRef={usernameRef}
             />
@@ -98,21 +127,11 @@ function Account() {
               required
               variant="outlined"
               margin="normal"
-              label="First Name"
-              id="firstName"
-              type="text"
+              label="Email"
+              id="email"
+              type="email"
               sx={{ width: '100%' }}
-              inputRef={firstNameRef}
-            />
-            <TextField
-              required
-              variant="outlined"
-              margin="normal"
-              label="Last Name"
-              id="lastName"
-              type="text"
-              sx={{ width: '100%' }}
-              inputRef={lastNameRef}
+              inputRef={emailRef}
             />
             <Button
               variant="contained"
@@ -133,7 +152,7 @@ function Account() {
                 margin: 'auto',
                 marginTop: 2,
               }}
-              onClick={()=> navigate('/login')}
+              onClick={() => navigate('/login')}
             >
               Back to Login
             </Button>
